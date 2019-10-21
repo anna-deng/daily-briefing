@@ -1,0 +1,36 @@
+.card-container {
+    border-radius: 10px;
+    width: 337px;
+    font-family: 'Rubik';
+    padding: 0px;
+    box-sizing: border-box;
+    box-shadow: 10px 40px 60px rgba(0,0,0,.08);
+    
+}
+
+.card-header {
+    background-color: #F49999;
+    border-radius: 10px 10px 0 0;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: white;
+    height: 60px;
+    line-height: 60px;
+    text-indent: 20px;
+    font-size: 14px;
+}
+
+.card-body {
+    font-weight: normal;
+    padding: 20px;
+}
+
+.card-description {
+    font-style: italic;
+}
+
+h1 {
+    font-weight: 500;
+    font-size: 28px;
+    margin-top: 0;
+}
