@@ -1,0 +1,30 @@
+.preview-card-container {
+  border-radius: 10px;
+  width: 337px;
+  font-family: "Rubik";
+  padding: 0px;
+  box-sizing: border-box;
+  box-shadow: 10px 40px 60px rgba(0, 0, 0, 0.08);
+  margin: 19px;
+  background: #fff;
+  height: 60px;
+}
+
+.preview-card-header {
+  background-color: #f49999;
+  border-radius: 10px 0 0 10px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: white;
+  height: 60px;
+  line-height: 30px;
+  padding: 0px 14px;
+  font-size: 14px;
+  float: left;
+}
+
+.preview-card-body {
+  font-weight: normal;
+  padding: 3px;
+  text-indent: 17px;
+}
