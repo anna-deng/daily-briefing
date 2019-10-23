@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,8 +7,14 @@ import {
 } from "react-router-dom";
 import './App.css';
 import Card from './components/Card/Card.js';
+import './data/getCalendarEvents'
+import { getEvents } from "./data/getCalendarEvents";
 
 export default function App() {
+
+  useEffect (() => {
+    getEvents()
+  })
 
   return (
     <Router>
