@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import './App.css';
 import Card from './components/Card/Card.js';
+import PreviewCard from './components/PreviewCard/PreviewCard'
 import './data/getCalendarEvents'
 import { getEvents } from "./data/getCalendarEvents";
 
