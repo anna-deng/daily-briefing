@@ -14,7 +14,11 @@ import { getEvents } from "./data/getCalendarEvents";
 export default function App() {
 
   useEffect (() => {
-    getEvents()
+    var data;
+    getEvents().then(response => {
+      data = response
+      console.log(data)
+    })
   })
 
   return (
