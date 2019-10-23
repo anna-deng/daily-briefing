@@ -1,34 +1,13 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-import './App.css';
-import Card from './components/Card/Card.js';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Card from "./components/Card/Card.js";
+import PreviewCard from "./components/PreviewCard/PreviewCard.js";
+import "./App.css";
 
 export default function App() {
-
   return (
     <Router>
       <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
-
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/about">
             <About />
@@ -46,7 +25,23 @@ export default function App() {
 }
 
 function Home() {
-  return <Card time={'10:30-11:00'} meetingTitle={'Anna <> Tommy Weekly 1:1'} name={'Anna Deng'} title={'student'} description={"let's fine a time to work on 338 together..."}/>;
+  return (
+    <div>
+      {/* <h1 className="App-title"> NEXT MEETING:</h1> */}
+      <Card
+        startTime={"10:30"}
+        endTime={"11:00"}
+        meetingTitle={"Anna <> Tommy Weekly 1:1"}
+        name={"Anna Deng"}
+        title={"Student at Northwestern University"}
+        description={"let's find a time to work on 338 together..."}
+      />
+      <PreviewCard
+        startTime={"11:00"}
+        meetingTitle={"Anna <> Tommy Weekly 1:1"}
+      />
+    </div>
+  );
 }
 
 function About() {
@@ -56,4 +51,3 @@ function About() {
 function Users() {
   return <h2>Users</h2>;
 }
-
