@@ -13,7 +13,7 @@ const Card = ({
     <div className="card-container">
       <div className="card-header">
         <p>
-          {startTime} - {endTime} AM
+          {startTime} - {endTime}
         </p>
       </div>
       <div className="card-body">

@@ -47,8 +47,8 @@ function Home() {
       return(
         (meetingsList) &&
         <Card
-          startTime={meetingsList.items[0].start.dateTime.substring(20)} 
-          endTime={meetingsList.items[0].end.dateTime.substring(20)}
+          startTime={new Date(meetingsList.items[0].start.dateTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} 
+          endTime={new Date(meetingsList.items[0].end.dateTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
           meetingTitle={meetingsList.items[0].summary}
           name={"Anna Deng"} // from LinkedIn
           title={"Student at Northwestern University"} 
@@ -61,7 +61,7 @@ function Home() {
     return (meetingsList) && meetingsList.items.map((event, i) => {
         return(
           (i !== 0) ? <PreviewCard
-          startTime={event.start.dateTime.substring(20)}
+          startTime={new Date(event.start.dateTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
           meetingTitle={event.summary}
           /> :
           null
