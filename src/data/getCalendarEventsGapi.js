@@ -12,7 +12,7 @@ function printCalendar() {
   //    b) Create Credentials / API key
   //    c) Since your key will be called from any of your users' browsers, set "Application restrictions" to "None",
   //       leave "Website restrictions" blank; you may optionally set "API restrictions" to "Google Calendar API"
-  var apiKey = 'YOUR_API_KEY';
+  var apiKey = process.env.REACT_APP_GOOGLE_API
   // You can get a list of time zones from here: http://www.timezoneconverter.com/cgi-bin/zonehelp
   var userTimeZone = "Europe/Budapest";
 
@@ -21,6 +21,7 @@ function printCalendar() {
     'apiKey': apiKey,
     // Discovery docs docs: https://developers.google.com/api-client-library/javascript/features/discovery
     'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+    
   }).then(function () {
     // Use Google's "apis-explorer" for research: https://developers.google.com/apis-explorer/#s/calendar/v3/
     // Events: list API docs: https://developers.google.com/calendar/v3/reference/events/list
