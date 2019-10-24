@@ -1,0 +1,67 @@
+{
+    "kind": "calendar#events",
+    "etag": "\"p32ocjd5bj2oua0g\"",
+    "summary": "338 Calendar",
+    "description": "calendar for 338 testing",
+    "updated": "2019-10-23T01:06:05.134Z",
+    "timeZone": "America/Chicago",
+    "accessRole": "reader",
+    "defaultReminders": [],
+    "nextSyncToken": "CLDJtKuYseUCEAAYAQ==",
+    "items": [
+        {
+            "kind": "calendar#event",
+            "etag": "\"3143585530268000\"",
+            "id": "37e904ugvb0o3fo0p7qasbo0k0",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=MzdlOTA0dWd2YjBvM2ZvMHA3cWFzYm8wazAgdS5ub3J0aHdlc3Rlcm4uZWR1X3M0OWVpMW5qNnAwMnVzYWtvN3V1NHRoMjYwQGc",
+            "created": "2019-10-23T01:06:05.000Z",
+            "updated": "2019-10-23T01:06:05.134Z",
+            "summary": "Test event",
+            "location": "Ford Motor Company Engineering Design Center, 2133 Sheridan Rd, Evanston, IL 60208, USA",
+            "creator": {
+                "email": "andrewparsons2020@u.northwestern.edu"
+            },
+            "organizer": {
+                "email": "u.northwestern.edu_s49ei1nj6p02usako7uu4th260@group.calendar.google.com",
+                "displayName": "338 Calendar",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2019-10-22T22:00:00-05:00"
+            },
+            "end": {
+                "dateTime": "2019-10-22T23:00:00-05:00"
+            },
+            "iCalUID": "37e904ugvb0o3fo0p7qasbo0k0@google.com",
+            "sequence": 0
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "\"3143585530268000\"",
+            "id": "37e904ugvb0o3fo0p7qasbo0k0",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=MzdlOTA0dWd2YjBvM2ZvMHA3cWFzYm8wazAgdS5ub3J0aHdlc3Rlcm4uZWR1X3M0OWVpMW5qNnAwMnVzYWtvN3V1NHRoMjYwQGc",
+            "created": "2019-10-23T01:06:05.000Z",
+            "updated": "2019-10-23T01:06:05.134Z",
+            "summary": "Test event",
+            "location": "Ford Motor Company Engineering Design Center, 2133 Sheridan Rd, Evanston, IL 60208, USA",
+            "creator": {
+                "email": "andrewparsons2020@u.northwestern.edu"
+            },
+            "organizer": {
+                "email": "u.northwestern.edu_s49ei1nj6p02usako7uu4th260@group.calendar.google.com",
+                "displayName": "338 Calendar",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2019-10-22T22:00:00-05:00"
+            },
+            "end": {
+                "dateTime": "2019-10-22T23:00:00-05:00"
+            },
+            "iCalUID": "37e904ugvb0o3fo0p7qasbo0k0@google.com",
+            "sequence": 0
+        }
+    ]
+}

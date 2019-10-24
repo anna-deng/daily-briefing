@@ -72,7 +72,7 @@ function Home() {
   return (
     <div>
       {/* <h1 className="App-title"> NEXT MEETING:</h1> */}
-      <button onClick={() => setupdateCalendar(!updateCalendar)}>Refresh Calendar</button> 
+      {/* <button onClick={() => setupdateCalendar(!updateCalendar)}>Refresh Calendar</button>  */}
       {renderCards()}
       {renderPreviewCards()}
     </div>
