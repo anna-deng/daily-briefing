@@ -3,6 +3,8 @@ import * as firebase from 'firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import App from './App'
 
+import gmail from './data/gmail';
+
 
 var firebaseConfig = {
   apiKey: "AIzaSyBR-cZfMpmV2MQk-dK7llqHDpGA619BQnY",
@@ -17,6 +19,8 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
+console.log(gmail);
+gmail.listLabels();
 
 export default class Auth extends React.Component {
 
@@ -45,7 +49,7 @@ export default class Auth extends React.Component {
         (user) => this.setState({isSignedIn: !!user})
     );
   }
-  
+
   // Make sure we un-register Firebase observers when the component unmounts.
   componentWillUnmount() {
     this.unregisterAuthObserver();
