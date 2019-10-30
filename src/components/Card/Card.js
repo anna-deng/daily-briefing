@@ -7,7 +7,8 @@ const Card = ({
   meetingTitle,
   name,
   title,
-  description
+  description,
+  email
 }) => {
   return (
     <div className="card-container">
@@ -22,6 +23,7 @@ const Card = ({
         <p>
           <span className="card-name">{name}</span> <br /> {title}
         </p>
+        <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a>
         <p className="card-description">{description}</p>
       </div>
     </div>

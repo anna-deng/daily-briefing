@@ -98,6 +98,7 @@ function Home() {
     getEvents().then(response => {
       data = response
       setMeetingsList(data)
+      console.log(data)
     })
   }, [updateCalendar, meetingsList])
 
@@ -111,6 +112,7 @@ function Home() {
           name={"Anna Deng"} // from LinkedIn
           title={"Student at Northwestern University"} 
           description={"let's find a time to work on 338 together..."}
+          email={meetingsList.items[0].creator.email}
         />
       )
   }
