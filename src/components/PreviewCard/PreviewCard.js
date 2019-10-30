@@ -8,7 +8,7 @@ const PreviewCard = ({ startTime, meetingTitle }) => {
         <p>{startTime}</p>
       </div>
       <div className="preview-card-body">
-        <p>{meetingTitle}</p>
+        <p className="preview-card-body--text">{meetingTitle}</p>
       </div>
     </div>
   );

@@ -26,5 +26,8 @@
 .preview-card-body {
   font-weight: normal;
   padding: 3px;
-  text-indent: 17px;
+}
+
+.preview-card-body--text {
+  margin-left: 117px;
 }

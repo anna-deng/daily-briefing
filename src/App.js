@@ -43,7 +43,19 @@ function Home() {
     })
   }, [updateCalendar, meetingsList])
 
+  const sortMeetingsList = () => {
+    if (meetingsList) {
+      meetingsList.items.sort(function(a,b) {
+        return new Date(a.start.dateTime) - new Date(b.start.dateTime);
+      })
+      meetingsList.items = meetingsList.items.filter(function(event) {
+        return new Date(event.start.dateTime) >= new Date(Date.now());
+      });
+    }
+  }
+
   const renderCards = () => { 
+      sortMeetingsList()
       return(
         (meetingsList) &&
         <Card
@@ -58,6 +70,7 @@ function Home() {
   }
 
   const renderPreviewCards = () => {
+    sortMeetingsList()
     return (meetingsList) && meetingsList.items.map((event, i) => {
         return(
           (i !== 0) ? <PreviewCard
