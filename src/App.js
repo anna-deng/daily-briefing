@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Card from "./components/Card/Card";
-import PreviewCard from "./components/PreviewCard/PreviewCard";
 import "./data/getCalendarEvents";
 import { getEvents } from "./data/getCalendarEvents";
 import * as firebase from "firebase";
@@ -94,7 +93,7 @@ function Home() {
       setMeetingsList(data);
       console.log(data);
     });
-  }, [updateCalendar, meetingsList]);
+}, []);
 
   const sortMeetingsList = () => {
     if (meetingsList) {
@@ -110,7 +109,8 @@ function Home() {
   const renderCards = () => {
     sortMeetingsList();
     return (
-      meetingsList && (
+      <div>
+      {meetingsList && 
         <Card
           startTime={new Date(
             meetingsList.items[0].start.dateTime
@@ -123,36 +123,31 @@ function Home() {
           title={"Student at Northwestern University"}
           description={"let's find a time to work on 338 together..."}
           email={meetingsList.items[0].creator.email}
-        />
-      )
-    );
-  };
-
-  function toggleIsExpanded(isExpanded) {
-    return !isExpanded;
-  }
-
-  const renderPreviewCards = () => {
-    sortMeetingsList();
-    return (
-      meetingsList &&
+          isFirst
+        />}
+      {meetingsList &&
       meetingsList.items.map((event, i) => {
-        var isExpanded = false;
-        console.log("before", isExpanded);
         return i !== 0 ? (
-          <div onClick={() => alert("after", toggleIsExpanded(isExpanded))}>
-            <PreviewCard
-              startTime={new Date(event.start.dateTime).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit"
-              })}
+          <div>
+            <Card
+              startTime={new Date(
+                event.start.dateTime
+              ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              endTime={new Date(
+                event.end.dateTime
+              ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
               meetingTitle={event.summary}
-              isExpanded={isExpanded}
+              name={"Anna Deng"} // from LinkedIn
+              title={"Student at Northwestern University"}
+              description={"let's find a time to work on 338 together..."}
+              email={event.creator.email}
             />
           </div>
-        ) : null;
-      })
-    );
+        ) : null
+        })
+      }
+    </div>
+    )
   };
 
   return (
@@ -162,7 +157,6 @@ function Home() {
         Refresh Calendar
       </button>
       {renderCards()}
-      {renderPreviewCards()}
     </div>
   );
 }
