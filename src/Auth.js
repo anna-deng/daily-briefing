@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import App from './App'
 import './GoogleLogin.css';
 
-import gmail from './data/gmail';
+// import gmail from './data/gmail';
 
 // import { gapi } from 'gapi-script';
 import { gapi, loadAuth2 } from 'gapi-script'
@@ -19,11 +19,8 @@ var firebaseConfig = {
   appId: "1:796106548237:web:fe3ca2fa78df1e1c12e144",
   measurementId: "G-TB9P1CNPM3",
   clientId: '796106548237-s8q81jovsqd4hj4it5ishgjnonl1hs94.apps.googleusercontent.com',
-  scopes: [
-    "email",
-    "profile",
-    "https://www.googleapis.com/auth/calendar"
-  ],
+  scopes: 
+      "email profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events",
   discoveryDocs: [
   "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"
   ]
@@ -51,18 +48,21 @@ class Auth extends Component {
       window.gapi.load('auth2', () => {
         this.auth2 = gapi.auth2.init({
           client_id: firebaseConfig.clientId,
+          scope: firebaseConfig.scopes,
+          discoveryDocs: firebaseConfig.discoveryDocs
         })
   
         // this.auth2.attachClickHandler(document.querySelector('#loginButton'), {}, this.onLoginSuccessful.bind(this))
   
         this.auth2.then(() => {
           console.log('on init');
+          console.log(this.auth2.currentUser.get().getBasicProfile().getName())
           this.setState({
             isSignedIn: this.auth2.isSignedIn.get(),
           });
         });
-      });    
-  
+      })  
+
       window.gapi.load('signin2', function() {
         // Method 3: render a sign in button
         // using this method will show Signed In if the user is already signed in
@@ -74,6 +74,8 @@ class Auth extends Component {
         }
         gapi.signin2.render('loginButton', opts)
       })
+
+
     }
   
     onSuccess() {
@@ -104,9 +106,32 @@ class Auth extends Component {
       }
       
     }
+
+    getCalendar() {
+        window.gapi.load('client:auth2', () => {
+            gapi.client.init({
+                client_id: firebaseConfig.clientId,
+                scope: firebaseConfig.scopes,
+                discoveryDocs: firebaseConfig.discoveryDocs
+              }).then(() => {
+                console.log('hullo')
+                // return gapi.client.calendar.events.list({
+                //     'calendarId': calendar_id,
+                //     'timeZone': 'America/Chicago',
+                //     'singleEvents': true,
+                //     'timeMin': (new Date()).toISOString(), //gathers only events not happened yet
+                //     'maxResults': 20,
+                //     'orderBy': 'startTime'
+                // })
+
+              })
+              .then(res => console.log(res))
+        });
+    }
     
     render() {
         if (this.state.isSignedIn) {
+            this.getCalendar()
             return(
                 <App></App>
             )

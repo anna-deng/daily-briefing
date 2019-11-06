@@ -7,7 +7,6 @@
     "firebase": "^7.2.1",
     "gapi-client": "0.0.3",
     "gapi-script": "0.0.5",
-    "googleapis": "^44.0.0",
     "moment": "^2.24.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
