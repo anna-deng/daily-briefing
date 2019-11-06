@@ -4,6 +4,8 @@ import "./App.css";
 import Card from "./components/Card/Card";
 import "./data/getCalendarEvents";
 import { getEvents } from "./data/getCalendarEvents";
+import NavBar from "./components/NavBar";
+import { useAuth0 } from "./react-auth0-spa";
 import * as firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
@@ -63,6 +65,15 @@ export default function App() {
   //     </Router>
   //   );
   // }
+
+  const { loading } = useAuth0();
+
+  if (loading) {
+    return (
+      <div>Loading...</div>
+    );
+  }
+
   return (
     <Router>
       <div>
@@ -152,11 +163,13 @@ function Home() {
 
   return (
     <div>
+      <NavBar />
       {/* <h1 className="App-title"> NEXT MEETING:</h1> */}
       <button onClick={() => setupdateCalendar(!updateCalendar)}>
         Refresh Calendar
       </button>
       {renderCards()}
+      <iframe src='https://www.linkedin.com/sales/gmail/profile/viewByEmail/thomasli2020@u.northwestern.edu'></iframe>
     </div>
   );
 }
