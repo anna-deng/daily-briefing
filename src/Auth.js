@@ -53,52 +53,19 @@ class Auth extends Component {
         this.auth2 = window.gapi.auth2.init({
           clientId: firebaseConfig.clientId,
           scope: firebaseConfig.scopes,
-          discoveryDocs: firebaseConfig.discoveryDocs,
-          response_type: 'id_token permission'
-        }, function(response) {
-          if(response.error){
-            console.log(response);
-            return;
-          }
-          console.log(response);
-        });
-
+          discoveryDocs: firebaseConfig.discoveryDocs
+        })
+  
         // this.auth2.attachClickHandler(document.querySelector('#loginButton'), {}, this.onLoginSuccessful.bind(this))
-
+  
         this.auth2.then(() => {
           console.log('on init');
           console.log(this.auth2.currentUser.get().getBasicProfile().getName())
-          console.log(this.auth2);
-
-
-          this.getCalendar();
-          //return;
-
-
-          /*window.gapi.auth2.authorize({
-            client_id: firebaseConfig.clientId,
-            scope: 'email profile openid calendar',
-            response_type: 'id_token permission'
-          }, function(response) {
-            if (response.error) {
-              // An error happened!
-              console.log(response.error);
-              return;
-            }
-            // The user authorized the application for the scopes requested.
-            var accessToken = response.access_token;
-            var idToken = response.id_token;
-            console.log(response);
-            // You can also now use gapi.client to perform authenticated requests.
-          });*/
-
-
-
           this.setState({
             isSignedIn: this.auth2.isSignedIn.get(),
           });
         });
-      })
+      })  
 
       window.gapi.load('signin2', function() {
         // Method 3: render a sign in button
@@ -151,28 +118,29 @@ class Auth extends Component {
     }
 
     getCalendar() {
-        gapi.client.init({
-            clientId: firebaseConfig.clientId,
-            scope: firebaseConfig.scopes,
-            discoveryDocs: firebaseConfig.discoveryDocs
-          }).then(() => {
-            // console.log('hullo')
-            gmail.listLabels(gapi.client.getToken());
-            return gapi.client.calendar.events.list({
-                'calendarId': 'primary',
-                'timeZone': 'America/Chicago',
-                'singleEvents': true,
-                'timeMin': (new Date()).toISOString(), //gathers only events not happened yet
-                'maxResults': 20,
-                'orderBy': 'startTime'
-            })
+      window.gapi.client.init({
+          clientId: firebaseConfig.clientId,
+          scope: firebaseConfig.scopes,
+          discoveryDocs: firebaseConfig.discoveryDocs
+        }).then(() => {
+          console.log('hullo')
+          return gapi.client.calendar.events.list({
+              'calendarId': 'primary',
+              'timeZone': 'America/Chicago',
+              'singleEvents': true,
+              'timeMin': (new Date()).toISOString(), //gathers only events not happened yet
+              'maxResults': 20,
+              'orderBy': 'startTime'
           })
-          .then(res => {
-            console.log(res.result)
-            this.updateCalendar(res.result)
-            console.log(this.state.calendar_events)
-          });
-    }
+        })
+        .then(res => {
+          console.log(res.result)
+          this.updateCalendar(res.result)
+          console.log(this.state.calendar_events)
+        });
+        // gmail.listLabels(gapi.client.getToken());
+      }
+
     render() {
         if (this.state.isSignedIn) {
             this.getCalendar()
