@@ -6,6 +6,7 @@ import "./data/getCalendarEvents";
 import { getEvents } from "./data/getCalendarEvents";
 import * as firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import { checkServerIdentity } from "tls";
 
 // Configure FirebaseUI.
 // Configure FirebaseUI.
@@ -95,6 +96,20 @@ function Home() {
     });
 }, []);
 
+  const getCode = () => {
+    var url = window.location.href;
+    if (url.includes('code')) {
+      //parse
+      var frontIndex = url.search("code=");
+      var endIndex = url.search("&state");
+      var code = url.substring(frontIndex + 5, endIndex);
+      console.log(code);
+      return url.substring(frontIndex, endIndex);
+    } else {
+      console.log('noCode');
+    }
+  }
+
   const sortMeetingsList = () => {
     if (meetingsList) {
       meetingsList.items.sort(function(a, b) {
@@ -153,6 +168,14 @@ function Home() {
   return (
     <div>
       {/* <h1 className="App-title"> NEXT MEETING:</h1> */}
+      <button onClick={() => {
+        window.open('https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86c265gg6eypd9&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fcallback&state=fooobar&scope=r_liteprofile%20r_emailaddress%20w_member_social')}
+      }>
+        get access token
+      </button>
+      <button onClick={() => getCode()}>
+        get code
+      </button>
       <button onClick={() => setupdateCalendar(!updateCalendar)}>
         Refresh Calendar
       </button>
