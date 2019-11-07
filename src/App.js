@@ -4,6 +4,8 @@ import "./App.css";
 import Card from "./components/Card/Card";
 import "./data/getCalendarEvents";
 import { getEvents } from "./data/getCalendarEvents";
+import { getLinkedInToken } from "./data/getLinkedInToken";
+import { getLinkedInInfo } from "./data/getLinkedInInfo";
 import * as firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { checkServerIdentity } from "tls";
@@ -104,7 +106,13 @@ function Home() {
       var endIndex = url.search("&state");
       var code = url.substring(frontIndex + 5, endIndex);
       console.log(code);
-      return url.substring(frontIndex, endIndex);
+      // console.log(getLinkedInToken(code))
+      getLinkedInToken(code).then(function(result) {
+        console.log(result.access_token);
+        getLinkedInInfo(result.access_token).then(function(result) {
+          console.log(result);
+        });
+      })
     } else {
       console.log('noCode');
     }
