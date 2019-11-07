@@ -10,7 +10,7 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 // Configure FirebaseUI.
 // Configure FirebaseUI.
 
-export default function App() {
+export default function App(props) {
   // const [isLoggedIn, setIsLooggedIn] = useState(false)
   // useEffect(() => {
   //   this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
@@ -74,7 +74,7 @@ export default function App() {
             <Users />
           </Route>
           <Route path="/">
-            <Home />
+            <Home calendar_events={props.calendar_events}/>
           </Route>
         </Switch>
       </div>
@@ -82,18 +82,21 @@ export default function App() {
   );
 }
 
-function Home() {
+function Home(props) {
   const [meetingsList, setMeetingsList] = useState(null);
   const [updateCalendar, setupdateCalendar] = useState(false);
 
   useEffect(() => {
-    var data;
-    getEvents().then(response => {
-      data = response;
-      setMeetingsList(data);
-      console.log(data);
-    });
-}, []);
+    // var data;
+    // getEvents().then(response => {
+    //   data = response;
+    //   console.log(props.calendar_events)
+    //   setMeetingsList(data);
+    //   console.log(data);
+    // });
+    setMeetingsList(props.calendar_events)
+}, [props.calendar_events]);
+
 
   const sortMeetingsList = () => {
     if (meetingsList) {

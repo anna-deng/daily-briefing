@@ -34,6 +34,7 @@ class Auth extends Component {
   
       this.state = {
         isSignedIn: false,
+        calendar_events: null
       }
       
     }
@@ -41,9 +42,10 @@ class Auth extends Component {
     componentDidMount() {
   
       const successCallback = this.onSuccess.bind(this);
+      const updateCalendar = this.updateCalendar.bind(this);
       
       window.gapi.load('client:auth2', () => {
-        this.auth2 = gapi.auth2.init({
+        this.auth2 = window.gapi.auth2.init({
           clientId: firebaseConfig.clientId,
           scope: firebaseConfig.scopes,
           discoveryDocs: firebaseConfig.discoveryDocs
@@ -82,6 +84,12 @@ class Auth extends Component {
         err: null
       })
     }
+
+    updateCalendar(data) {
+      this.setState({
+        calendar_events: data
+      })
+    }
   
     onLoginFailed(err) {
       this.setState({
@@ -110,7 +118,7 @@ class Auth extends Component {
             scope: firebaseConfig.scopes,
             discoveryDocs: firebaseConfig.discoveryDocs
           }).then(() => {
-            console.log('hullo')
+            // console.log('hullo')
             return gapi.client.calendar.events.list({
                 'calendarId': 'primary',
                 'timeZone': 'America/Chicago',
@@ -120,14 +128,18 @@ class Auth extends Component {
                 'orderBy': 'startTime'
             })
           })
-          .then(res => console.log(res))
+          .then(res => {
+            console.log(res.result)
+            this.updateCalendar(res.result)
+            console.log(this.state.calendar_events)
+          });
     }
     
     render() {
         if (this.state.isSignedIn) {
             this.getCalendar()
             return(
-                <App></App>
+                <App calendar_events={this.state.calendar_events}></App>
             )
         }
         else {
