@@ -8,7 +8,7 @@ import './GoogleLogin.css';
 // import { gapi } from 'gapi-script';
 import { gapi, loadAuth2 } from 'gapi-script'
 const calendar_id = 'u.northwestern.edu_s49ei1nj6p02usako7uu4th260@group.calendar.google.com'
-
+var apiKey = process.env.REACT_APP_GOOGLE_API
 var firebaseConfig = {
   apiKey: "AIzaSyBR-cZfMpmV2MQk-dK7llqHDpGA619BQnY",
   authDomain: "dailybriefingbot.firebaseapp.com",
@@ -19,11 +19,8 @@ var firebaseConfig = {
   appId: "1:796106548237:web:fe3ca2fa78df1e1c12e144",
   measurementId: "G-TB9P1CNPM3",
   clientId: '796106548237-s8q81jovsqd4hj4it5ishgjnonl1hs94.apps.googleusercontent.com',
-  scopes: 
-      "email profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events",
-  discoveryDocs: [
-  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"
-  ]
+  scopes: "https://www.googleapis.com/auth/calendar.readonly",
+  discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -45,9 +42,9 @@ class Auth extends Component {
   
       const successCallback = this.onSuccess.bind(this);
       
-      window.gapi.load('auth2', () => {
+      window.gapi.load('client:auth2', () => {
         this.auth2 = gapi.auth2.init({
-          client_id: firebaseConfig.clientId,
+          clientId: firebaseConfig.clientId,
           scope: firebaseConfig.scopes,
           discoveryDocs: firebaseConfig.discoveryDocs
         })
@@ -108,25 +105,22 @@ class Auth extends Component {
     }
 
     getCalendar() {
-        window.gapi.load('client:auth2', () => {
-            gapi.client.init({
-                client_id: firebaseConfig.clientId,
-                scope: firebaseConfig.scopes,
-                discoveryDocs: firebaseConfig.discoveryDocs
-              }).then(() => {
-                console.log('hullo')
-                // return gapi.client.calendar.events.list({
-                //     'calendarId': calendar_id,
-                //     'timeZone': 'America/Chicago',
-                //     'singleEvents': true,
-                //     'timeMin': (new Date()).toISOString(), //gathers only events not happened yet
-                //     'maxResults': 20,
-                //     'orderBy': 'startTime'
-                // })
-
-              })
-              .then(res => console.log(res))
-        });
+        gapi.client.init({
+            clientId: firebaseConfig.clientId,
+            scope: firebaseConfig.scopes,
+            discoveryDocs: firebaseConfig.discoveryDocs
+          }).then(() => {
+            console.log('hullo')
+            return gapi.client.calendar.events.list({
+                'calendarId': 'primary',
+                'timeZone': 'America/Chicago',
+                'singleEvents': true,
+                'timeMin': (new Date()).toISOString(), //gathers only events not happened yet
+                'maxResults': 20,
+                'orderBy': 'startTime'
+            })
+          })
+          .then(res => console.log(res))
     }
     
     render() {
