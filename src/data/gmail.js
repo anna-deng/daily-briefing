@@ -86,7 +86,7 @@ function getNewToken(oAuth2Client, callback) {
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-function listLabels(auth=oAuth2Client) {
+function listLabels(token2) {
   /*const gmail = google.gmail({version: 'v1', auth});
   gmail.users.labels.list({
     userId: 'me',
@@ -102,10 +102,17 @@ function listLabels(auth=oAuth2Client) {
       console.log('No labels found.');
     }
   });*/
+  const {client_secret, client_id, redirect_uris} = content.installed;
+  oAuth2Client = new google.auth.OAuth2(
+      client_id, client_secret, redirect_uris[0]);
+
+  // Check if we have previously stored a token.
+    oAuth2Client.setCredentials(token2);
+  var auth = oAuth2Client;
   const gmail = google.gmail({version: 'v1', auth});
   gmail.users.messages.list({
     userId: 'me',
-    maxResults: 50,
+    maxResults: 1,
     q: 'from:no-reply@piazza.com',
   }, (err, res) => {
     if(err) return console.log('Err: ' + err);
@@ -122,7 +129,14 @@ function listLabels(auth=oAuth2Client) {
   });
 }
 
-function listFirstMessage(auth=oAuth2Client){
+function listFirstMessage(token2){
+  const {client_secret, client_id, redirect_uris} = content.installed;
+  oAuth2Client = new google.auth.OAuth2(
+      client_id, client_secret, redirect_uris[0]);
+
+  // Check if we have previously stored a token.
+    oAuth2Client.setCredentials(token2);
+  var auth = oAuth2Client;
   const gmail = google.gmail({version: 'v1', auth});
   gmail.users.messages.list({
     userId: 'me',
@@ -158,6 +172,7 @@ function getMessage(auth=oAuth2Client, userId, messageId) {
     if(err) return console.log('Err: ' + err);
     const mess = res.data["payload"]["body"]["data"];
     console.log(res.data["payload"]["body"]);
+    console.log(res);
     //console.log(Buffer.from(mess, 'base64').toString());
   });
 }

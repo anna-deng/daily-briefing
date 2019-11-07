@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import App from './App'
 import './GoogleLogin.css';
 
-// import gmail from './data/gmail';
+import gmail from './data/gmail';
 
 // import { gapi } from 'gapi-script';
 import { gapi, loadAuth2 } from 'gapi-script'
@@ -19,8 +19,11 @@ var firebaseConfig = {
   appId: "1:796106548237:web:fe3ca2fa78df1e1c12e144",
   measurementId: "G-TB9P1CNPM3",
   clientId: '796106548237-s8q81jovsqd4hj4it5ishgjnonl1hs94.apps.googleusercontent.com',
-  scopes: "https://www.googleapis.com/auth/calendar.readonly",
-  discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
+  scopes:
+      "https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly",
+  discoveryDocs: [
+  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"
+  ]
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -31,16 +34,18 @@ firebase.analytics();
 class Auth extends Component {
     constructor(props) {
       super(props);
-  
+
       this.state = {
         isSignedIn: false,
         calendar_events: null
       }
-      
+
     }
-  
+
+
+
     componentDidMount() {
-  
+
       const successCallback = this.onSuccess.bind(this);
       const updateCalendar = this.updateCalendar.bind(this);
       
@@ -48,19 +53,52 @@ class Auth extends Component {
         this.auth2 = window.gapi.auth2.init({
           clientId: firebaseConfig.clientId,
           scope: firebaseConfig.scopes,
-          discoveryDocs: firebaseConfig.discoveryDocs
-        })
-  
+          discoveryDocs: firebaseConfig.discoveryDocs,
+          response_type: 'id_token permission'
+        }, function(response) {
+          if(response.error){
+            console.log(response);
+            return;
+          }
+          console.log(response);
+        });
+
         // this.auth2.attachClickHandler(document.querySelector('#loginButton'), {}, this.onLoginSuccessful.bind(this))
-  
+
         this.auth2.then(() => {
           console.log('on init');
           console.log(this.auth2.currentUser.get().getBasicProfile().getName())
+          console.log(this.auth2);
+
+
+          this.getCalendar();
+          //return;
+
+
+          /*window.gapi.auth2.authorize({
+            client_id: firebaseConfig.clientId,
+            scope: 'email profile openid calendar',
+            response_type: 'id_token permission'
+          }, function(response) {
+            if (response.error) {
+              // An error happened!
+              console.log(response.error);
+              return;
+            }
+            // The user authorized the application for the scopes requested.
+            var accessToken = response.access_token;
+            var idToken = response.id_token;
+            console.log(response);
+            // You can also now use gapi.client to perform authenticated requests.
+          });*/
+
+
+
           this.setState({
             isSignedIn: this.auth2.isSignedIn.get(),
           });
         });
-      })  
+      })
 
       window.gapi.load('signin2', function() {
         // Method 3: render a sign in button
@@ -76,7 +114,7 @@ class Auth extends Component {
 
 
     }
-  
+
     onSuccess() {
       console.log('on success')
       this.setState({
@@ -97,7 +135,7 @@ class Auth extends Component {
         error: err,
       })
     }
-  
+
     getContent() {
       if (this.state.isSignedIn) {
         return <p>hello user, you're signed in </p>
@@ -109,7 +147,7 @@ class Auth extends Component {
           </div>
         )
       }
-      
+
     }
 
     getCalendar() {
@@ -119,6 +157,7 @@ class Auth extends Component {
             discoveryDocs: firebaseConfig.discoveryDocs
           }).then(() => {
             // console.log('hullo')
+            gmail.listLabels(gapi.client.getToken());
             return gapi.client.calendar.events.list({
                 'calendarId': 'primary',
                 'timeZone': 'America/Chicago',
@@ -134,7 +173,6 @@ class Auth extends Component {
             console.log(this.state.calendar_events)
           });
     }
-    
     render() {
         if (this.state.isSignedIn) {
             this.getCalendar()
@@ -143,11 +181,11 @@ class Auth extends Component {
             )
         }
         else {
-            return (      
+            return (
                 <div className="App">
                   <header className="App-header">
                     <h2>Sample App.</h2>
-                    {this.getContent()}           
+                    {this.getContent()}
                   </header>
                 </div>
               );
