@@ -85,6 +85,8 @@ export default function App(props) {
 function Home(props) {
   const [meetingsList, setMeetingsList] = useState(null);
   const [updateCalendar, setupdateCalendar] = useState(false);
+  const [attendees, updateAttendees] = useState(Array());
+  const [hasPulledEmails, updateHasPulledEmails] = useState(false)
 
   useEffect(() => {
     // var data;
@@ -130,6 +132,15 @@ function Home(props) {
         />}
       {meetingsList &&
       meetingsList.items.map((event, i) => {
+        console.log(attendees)
+        if(event.attendees && !hasPulledEmails) {
+          updateHasPulledEmails(true)
+          event.attendees.forEach(user => {
+            if(!attendees.includes(user.email)) {
+              updateAttendees(attendees.push(user.email))
+            }
+          });
+        }
         return i !== 0 ? (
           <div>
             <Card
@@ -140,9 +151,9 @@ function Home(props) {
                 event.end.dateTime
               ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
               meetingTitle={event.summary}
-              name={"Anna Deng"} // from LinkedIn
-              title={"Student at Northwestern University"}
-              description={"let's find a time to work on 338 together..."}
+              name={event.creator.displayName ? event.creator.displayName : event.creator.email} // from LinkedIn
+              title={event.creator.email}
+              description={event.description!="" ? event.description : "No Event Description"}
               email={event.creator.email}
             />
           </div>
