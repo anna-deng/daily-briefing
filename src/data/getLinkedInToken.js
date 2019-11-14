@@ -4,7 +4,8 @@ const linkedin_url = 'https://cors-anywhere.herokuapp.com/https://www.linkedin.c
 // headers = {'Content-type': application/x-www-form-urlencoded}
 
 export async function getLinkedInToken(code) {
-  return await axios.post(linkedin_url + code, 
+  return await axios
+    .post(linkedin_url + code, 
       {
           headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
