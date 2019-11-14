@@ -28,6 +28,7 @@ const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 const token = {"access_token":"ya29.Il-pB4-S9ZfCIhGVk_IatyWXt_cUQiN_0G7ZXxni9rUbOwH96coNfcPk2H3F5zDb5gD12-2N_49ENUiZrE-JvMmkkuW0QaFoLcdCxrbp8uZkS8Pbpbi5V92rXRe5iTxK6g","scope":"https://www.googleapis.com/auth/gmail.readonly","token_type":"Bearer","expiry_date":1572404537057};
 const content = {"installed":{"client_id":"519882293144-ho53n19447o521tg4jtgngig6kuqg5ku.apps.googleusercontent.com","project_id":"quickstart-1567449523386","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"WZeGCQd7ODhrBEBQC7i7LA9C","redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}};
 
+
 var oAuth2Client;
 
 //console.log(fs);
@@ -81,6 +82,24 @@ function getNewToken(oAuth2Client, callback) {
   });
 }*/
 
+
+const meeting_attendees = ["jonathandai1226@gmail.com", "annadeng2020@u.northwestern.edu"]
+
+function transformMeetingAddressesForQuery(email_arr) {
+  if (email_arr.length === 0) {
+    return ""
+  }
+  else {
+    let str = "from: "
+    meeting_attendees.map((email) => {
+      str = str + email + ", "
+    })
+    console.log(str)
+    return str; 
+  }
+}  
+
+
 /**
  * Lists the labels in the user's account.
  *
@@ -105,6 +124,8 @@ function listLabels(token2) {
   const {client_secret, client_id, redirect_uris} = content.installed;
   oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
+      
+  // filename:ics pulls emails with calendar events 
 
   // Check if we have previously stored a token.
     oAuth2Client.setCredentials(token2);
@@ -113,11 +134,13 @@ function listLabels(token2) {
   gmail.users.messages.list({
     userId: 'me',
     maxResults: 1,
-    q: 'from:no-reply@piazza.com',
+    q: 'from:jonathandai1226@gmail.com',
+    // q: transformMeetingAddressesForQuery(meeting_attendees),
   }, (err, res) => {
     if(err) return console.log('Err: ' + err);
+    console.log(res)
     const mess = res.data.messages;
-    if(mess.length){
+    if(mess && mess.length){
       console.log('Messages:');
       mess.forEach((mes) => {
         console.log(`- ${mes.id}`);

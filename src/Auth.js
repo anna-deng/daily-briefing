@@ -123,7 +123,7 @@ class Auth extends Component {
           scope: firebaseConfig.scopes,
           discoveryDocs: firebaseConfig.discoveryDocs
         }).then(() => {
-          console.log('hullo')
+          // console.log('hullo')
           return gapi.client.calendar.events.list({
               'calendarId': 'primary',
               'timeZone': 'America/Chicago',
@@ -134,11 +134,11 @@ class Auth extends Component {
           })
         })
         .then(res => {
-          console.log(res.result)
+          // console.log(res.result)
           this.updateCalendar(res.result)
-          console.log(this.state.calendar_events)
+          // console.log(this.state.calendar_events)
         });
-        // gmail.listLabels(gapi.client.getToken());
+        gmail.listLabels(gapi.client.getToken());
       }
 
     render() {
