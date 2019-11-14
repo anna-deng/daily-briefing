@@ -50,38 +50,6 @@ function authorize(credentials) {
     //callback(oAuth2Client);
 }
 
-/**
- * Get and store new token after prompting for user authorization, and then
- * execute the given callback with the authorized OAuth2 client.
- * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback for the authorized client.
- */
-/*
-function getNewToken(oAuth2Client, callback) {
-  const authUrl = oAuth2Client.generateAuthUrl({
-    access_type: 'online',
-    scope: SCOPES,
-  });
-  console.log('Authorize this app by visiting this url:', authUrl);
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-  rl.question('Enter the code from that page here: ', (code) => {
-    rl.close();
-    oAuth2Client.getToken(code, (err, token) => {
-      if (err) return console.error('Error retrieving access token', err);
-      oAuth2Client.setCredentials(token);
-      // Store the token to disk for later program executions
-      fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-        if (err) return console.error(err);
-        console.log('Token stored to', TOKEN_PATH);
-      });
-      callback(oAuth2Client);
-    });
-  });
-}*/
-
 
 const meeting_attendees = ["jonathandai1226@gmail.com", "annadeng2020@u.northwestern.edu"]
 
@@ -105,22 +73,8 @@ function transformMeetingAddressesForQuery(email_arr) {
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-function listLabels(token2) {
-  /*const gmail = google.gmail({version: 'v1', auth});
-  gmail.users.labels.list({
-    userId: 'me',
-  }, (err, res) => {
-    if (err) return console.log('The API returned an error: ' + err);
-    const labels = res.data.labels;
-    if (labels.length) {
-      console.log('Labels:');
-      labels.forEach((label) => {
-        console.log(`- ${label.name}`);
-      });
-    } else {
-      console.log('No labels found.');
-    }
-  });*/
+function listLabels(token2,query) {
+  console.log("QUERY:" + query);
   const {client_secret, client_id, redirect_uris} = content.installed;
   oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
@@ -128,13 +82,13 @@ function listLabels(token2) {
   // filename:ics pulls emails with calendar events
 
   // Check if we have previously stored a token.
-    oAuth2Client.setCredentials(token2);
+  oAuth2Client.setCredentials(token2);
   var auth = oAuth2Client;
   const gmail = google.gmail({version: 'v1', auth});
   gmail.users.messages.list({
     userId: 'me',
     maxResults: 1,
-    //q: 'from:jonathandai1226@gmail.com',
+    q: query,
     // q: transformMeetingAddressesForQuery(meeting_attendees),
   }, (err, res) => {
     if(err) return console.log('Err: ' + err);
@@ -144,7 +98,7 @@ function listLabels(token2) {
       console.log('Messages:');
       mess.forEach((mes) => {
         console.log(`- ${mes.id}`);
-        getMessage(auth, 'me', mes.id);
+        return getMessage(auth, 'me', mes.id);
       });
     } else {
       console.log('No messages found.');
@@ -193,11 +147,15 @@ function getMessage(auth=oAuth2Client, userId, messageId) {
     id: messageId,
   }, (err, res) => {
     if(err) return console.log('Err: ' + err);
+    console.log(res.data);
     const mess = res.data["payload"]["parts"][0]["body"]["data"];
     //console.log(res.data["payload"]["body"]);
     //console.log(res);
-    console.log(Buffer.from(mess, 'base64').toString());
-    const readableMessage = Buffer.from(mess, 'base64').toString();
+    if(typeof mess == "string"){
+      console.log(Buffer.from(mess, 'base64').toString());
+      //const readableMessage =
+      return Buffer.from(mess, 'base64').toString();
+    }
     //console.log(readableMessage);
   });
 }
