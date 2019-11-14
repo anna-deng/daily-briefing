@@ -94,7 +94,7 @@ function transformMeetingAddressesForQuery(email_arr) {
     meeting_attendees.map((email) => {
       str = str + email + ", "
     })
-    console.log(str)
+    // console.log(str)
     return str;
   }
 }
@@ -138,12 +138,12 @@ function listLabels(token2) {
     q: transformMeetingAddressesForQuery(meeting_attendees),
   }, (err, res) => {
     if(err) return console.log('Err: ' + err);
-    console.log(res)
+    // console.log(res)
     const mess = res.data.messages;
     if(mess && mess.length){
-      console.log('Messages:');
+      // console.log('Messages:');
       mess.forEach((mes) => {
-        console.log(`- ${mes.id}`);
+        // console.log(`- ${mes.id}`);
         getMessage(auth, 'me', mes.id);
       });
     } else {

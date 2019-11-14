@@ -100,6 +100,14 @@ function Home(props) {
 }, [props.calendar_events]);
 
 
+  const setAttendees = (event) => {
+    let email_string = ""
+    event.attendees.map((usr)=>{
+      email_string += usr.email + " "
+    })
+    return email_string
+  }
+
   const sortMeetingsList = () => {
     if (meetingsList) {
       meetingsList.items.sort(function(a, b) {
@@ -128,19 +136,20 @@ function Home(props) {
           title={"Student at Northwestern University"}
           description={"let's find a time to work on 338 together..."}
           email={meetingsList.items[0].creator.email}
+          meetingAttendees={attendees}
           isFirst
         />}
       {meetingsList &&
       meetingsList.items.map((event, i) => {
-        console.log(attendees)
-        if(event.attendees && !hasPulledEmails) {
-          updateHasPulledEmails(true)
-          event.attendees.forEach(user => {
-            if(!attendees.includes(user.email)) {
-              updateAttendees(attendees.push(user.email))
-            }
-          });
-        }
+        // console.log(attendees)
+        // if(event.attendees && !hasPulledEmails) {
+        //   updateHasPulledEmails(true)
+        //   event.attendees.forEach(user => {
+        //     if(!attendees.includes(user.email)) {
+        //       updateAttendees(attendees.push(user.email))
+        //     }
+        //   });
+        // }
         return i !== 0 ? (
           <div>
             <Card
@@ -155,6 +164,7 @@ function Home(props) {
               title={event.creator.email}
               description={event.description!=="" ? event.description : "No Event Description"}
               email={event.creator.email}
+              meetingAttendees={setAttendees(event)}
             />
           </div>
         ) : null

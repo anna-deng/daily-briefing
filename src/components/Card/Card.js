@@ -9,10 +9,16 @@ const Card = ({
   title,
   description,
   email,
-  isFirst
+  isFirst, 
+  meetingAttendees, 
 }) => {
 
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const pullEmails = () => {
+    console.log(meetingAttendees)
+  }
+
 
   useEffect(() => {
     console.log('toggle')
@@ -35,6 +41,7 @@ const Card = ({
               </p>
               <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a>
               <p className="card-description" dangerouslySetInnerHTML={{ __html: description}}></p>
+              <button onClick={()=>pullEmails()}>pull emails</button>
             </div>
           </div>)
         :
