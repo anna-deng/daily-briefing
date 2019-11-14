@@ -34,7 +34,7 @@ const Card = ({
                 <span className="card-name">{name}</span> <br /> {title}
               </p>
               <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a>
-              <p className="card-description">{description}</p>
+              <p className="card-description" dangerouslySetInnerHTML={{ __html: description}}></p>
             </div>
           </div>)
         :
