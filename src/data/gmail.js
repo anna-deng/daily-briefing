@@ -16,9 +16,10 @@
  */
 // [START gmail_quickstart]
 //const fs = require('fs');
+
+
 const readline = require('readline');
 const {google} = require('googleapis');
-
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
@@ -82,7 +83,6 @@ function getNewToken(oAuth2Client, callback) {
   });
 }*/
 
-
 const meeting_attendees = ["jonathandai1226@gmail.com", "annadeng2020@u.northwestern.edu"]
 
 function transformMeetingAddressesForQuery(email_arr) {
@@ -134,8 +134,8 @@ function listLabels(token2) {
   gmail.users.messages.list({
     userId: 'me',
     maxResults: 1,
-    q: 'from:jonathandai1226@gmail.com',
-    // q: transformMeetingAddressesForQuery(meeting_attendees),
+    // q: 'from:jonathandai1226@gmail.com',
+    q: transformMeetingAddressesForQuery(meeting_attendees),
   }, (err, res) => {
     if(err) return console.log('Err: ' + err);
     console.log(res)
