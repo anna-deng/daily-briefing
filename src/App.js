@@ -153,7 +153,7 @@ function Home(props) {
               meetingTitle={event.summary}
               name={event.creator.displayName ? event.creator.displayName : event.creator.email} // from LinkedIn
               title={event.creator.email}
-              description={event.description!="" ? event.description : "No Event Description"}
+              description={event.description!=="" ? event.description : "No Event Description"}
               email={event.creator.email}
             />
           </div>
