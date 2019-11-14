@@ -95,9 +95,9 @@ function transformMeetingAddressesForQuery(email_arr) {
       str = str + email + ", "
     })
     console.log(str)
-    return str; 
+    return str;
   }
-}  
+}
 
 
 /**
@@ -124,8 +124,8 @@ function listLabels(token2) {
   const {client_secret, client_id, redirect_uris} = content.installed;
   oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
-      
-  // filename:ics pulls emails with calendar events 
+
+  // filename:ics pulls emails with calendar events
 
   // Check if we have previously stored a token.
     oAuth2Client.setCredentials(token2);
@@ -134,7 +134,7 @@ function listLabels(token2) {
   gmail.users.messages.list({
     userId: 'me',
     maxResults: 1,
-    q: 'from:jonathandai1226@gmail.com',
+    //q: 'from:jonathandai1226@gmail.com',
     // q: transformMeetingAddressesForQuery(meeting_attendees),
   }, (err, res) => {
     if(err) return console.log('Err: ' + err);
@@ -193,10 +193,25 @@ function getMessage(auth=oAuth2Client, userId, messageId) {
     id: messageId,
   }, (err, res) => {
     if(err) return console.log('Err: ' + err);
-    const mess = res.data["payload"]["body"]["data"];
-    console.log(res.data["payload"]["body"]);
-    console.log(res);
-    //console.log(Buffer.from(mess, 'base64').toString());
+    const mess = res.data["payload"]["parts"][0]["body"]["data"];
+    //console.log(res.data["payload"]["body"]);
+    //console.log(res);
+    console.log(Buffer.from(mess, 'base64').toString());
+    const readableMessage = Buffer.from(mess, 'base64').toString();
+    //console.log(readableMessage);
+  });
+}
+
+function getAttachment(auth=oAuth2Client, userId, messageId, attachmentId){
+  const gmail = google.gmail({version: 'v1', auth});
+  gmail.users.messages.attachments.get({
+    id: attachmentId,
+    messageId: messageId,
+    userId: userId
+  }, (err,res) => {
+    if(err) return console.log('Err: ' + err);
+    const attach = res.data;
+    console.log(attach);
   });
 }
 // [END gmail_quickstart]
