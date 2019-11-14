@@ -85,7 +85,7 @@ export default function App(props) {
 function Home(props) {
   const [meetingsList, setMeetingsList] = useState(null);
   const [updateCalendar, setupdateCalendar] = useState(false);
-  const [attendees, updateAttendees] = useState(Array());
+  const [attendees, updateAttendees] = useState([]);
   const [hasPulledEmails, updateHasPulledEmails] = useState(false)
 
   useEffect(() => {

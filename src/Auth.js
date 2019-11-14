@@ -109,7 +109,7 @@ class Auth extends Component {
       } else {
         return (
           <div>
-            <p>You are not signed in. Click here to sign in.</p>
+            <p>Information about your upcoming meeting attendees.</p>
             <button id="loginButton">Login with Google</button>
           </div>
         )
@@ -152,7 +152,7 @@ class Auth extends Component {
             return (
                 <div className="App">
                   <header className="App-header">
-                    <h2>Sample App.</h2>
+                    <h2>Daily Briefing</h2>
                     {this.getContent()}
                   </header>
                 </div>
