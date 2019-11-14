@@ -105,22 +105,8 @@ function transformMeetingAddressesForQuery(email_arr) {
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-function listLabels(token2) {
-  /*const gmail = google.gmail({version: 'v1', auth});
-  gmail.users.labels.list({
-    userId: 'me',
-  }, (err, res) => {
-    if (err) return console.log('The API returned an error: ' + err);
-    const labels = res.data.labels;
-    if (labels.length) {
-      console.log('Labels:');
-      labels.forEach((label) => {
-        console.log(`- ${label.name}`);
-      });
-    } else {
-      console.log('No labels found.');
-    }
-  });*/
+function listLabels(token2,query) {
+  console.log("QUERY:" + query);
   const {client_secret, client_id, redirect_uris} = content.installed;
   oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
@@ -128,14 +114,14 @@ function listLabels(token2) {
   // filename:ics pulls emails with calendar events
 
   // Check if we have previously stored a token.
-    oAuth2Client.setCredentials(token2);
+  oAuth2Client.setCredentials(token2);
   var auth = oAuth2Client;
   const gmail = google.gmail({version: 'v1', auth});
   gmail.users.messages.list({
     userId: 'me',
     maxResults: 1,
-    //q: 'from:jonathandai1226@gmail.com',
-    q: transformMeetingAddressesForQuery(meeting_attendees),
+    q: query,
+    // q: transformMeetingAddressesForQuery(meeting_attendees),
   }, (err, res) => {
     if(err) return console.log('Err: ' + err);
     // console.log(res)
@@ -143,8 +129,13 @@ function listLabels(token2) {
     if(mess && mess.length){
       // console.log('Messages:');
       mess.forEach((mes) => {
+<<<<<<< HEAD
         // console.log(`- ${mes.id}`);
         getMessage(auth, 'me', mes.id);
+=======
+        console.log(`- ${mes.id}`);
+        return getMessage(auth, 'me', mes.id);
+>>>>>>> a9f7d0079e460d4d30fd9233971187ee1a77296d
       });
     } else {
       console.log('No messages found.');
@@ -193,11 +184,15 @@ function getMessage(auth=oAuth2Client, userId, messageId) {
     id: messageId,
   }, (err, res) => {
     if(err) return console.log('Err: ' + err);
+    console.log(res.data);
     const mess = res.data["payload"]["parts"][0]["body"]["data"];
     //console.log(res.data["payload"]["body"]);
     //console.log(res);
-    console.log(Buffer.from(mess, 'base64').toString());
-    const readableMessage = Buffer.from(mess, 'base64').toString();
+    if(typeof mess == "string"){
+      console.log(Buffer.from(mess, 'base64').toString());
+      //const readableMessage =
+      return Buffer.from(mess, 'base64').toString();
+    }
     //console.log(readableMessage);
   });
 }
