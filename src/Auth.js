@@ -79,6 +79,8 @@ class Auth extends Component {
         gapi.signin2.render('loginButton', opts)
       })
 
+      
+
 
     }
 
@@ -134,7 +136,6 @@ class Auth extends Component {
           })
         })
         .then(res => {
-          // console.log(res.result)
           this.updateCalendar(res.result)
           // console.log(this.state.calendar_events)
         });
@@ -143,7 +144,9 @@ class Auth extends Component {
 
     render() {
         if (this.state.isSignedIn) {
-            this.getCalendar()
+            if(!this.state.calendar_events){
+              this.getCalendar()
+            }
             return(
                 <App calendar_events={this.state.calendar_events}></App>
             )

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./card.css";
+import getNews from '../../data/news'
 
 const Card = ({
   startTime,
@@ -11,12 +12,18 @@ const Card = ({
   email,
   isFirst, 
   meetingAttendees, 
+  workplace
 }) => {
 
   const [isExpanded, setIsExpanded] = useState(false);
 
   const pullEmails = () => {
     console.log(meetingAttendees)
+  }
+
+  const getNewsArticles = (query) => {
+    // var data = null
+    getNews(query).then(response => console.log(response))
   }
 
 
@@ -42,6 +49,7 @@ const Card = ({
               <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a>
               <p className="card-description" dangerouslySetInnerHTML={{ __html: description}}></p>
               <button onClick={()=>pullEmails()}>pull emails</button>
+              <button onClick={()=>getNewsArticles(workplace)}>pull news articles</button>
             </div>
           </div>)
         :

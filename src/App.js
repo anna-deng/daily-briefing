@@ -6,6 +6,7 @@ import "./data/getCalendarEvents";
 import { getEvents } from "./data/getCalendarEvents";
 import * as firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import getNews from './data/news'
 
 // Configure FirebaseUI.
 // Configure FirebaseUI.
@@ -96,16 +97,19 @@ function Home(props) {
     //   setMeetingsList(data);
     //   console.log(data);
     // });
+    // console.log(props.calendar_events)
     setMeetingsList(props.calendar_events)
 }, [props.calendar_events]);
 
 
   const setAttendees = (event) => {
     let email_string = ""
-    event.attendees.map((usr)=>{
-      email_string += usr.email + " "
-    })
-    return email_string
+    if(event.attendees) {
+      event.attendees.map((usr)=>{
+        email_string += usr.email + " "
+      })
+      return email_string
+    }
   }
 
   const sortMeetingsList = () => {
@@ -118,6 +122,11 @@ function Home(props) {
       });
     }
   };
+
+  const getNewsArticles = (query) => {
+    // var data = null
+    getNews(query).then(response => console.log(response))
+  }
 
   const renderCards = () => {
     sortMeetingsList();
@@ -165,6 +174,7 @@ function Home(props) {
               description={event.description!=="" ? event.description : "No Event Description"}
               email={event.creator.email}
               meetingAttendees={setAttendees(event)}
+              workplace={"google"}
             />
           </div>
         ) : null
@@ -177,7 +187,7 @@ function Home(props) {
   return (
     <div>
       {/* <h1 className="App-title"> NEXT MEETING:</h1> */}
-      <button onClick={() => setupdateCalendar(!updateCalendar)}>
+      <button onClick={() => getNewsArticles("Google")}>
         Refresh Calendar
       </button>
       {renderCards()}
