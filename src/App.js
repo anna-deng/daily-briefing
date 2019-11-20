@@ -6,6 +6,7 @@ import "./data/getCalendarEvents";
 import { getEvents } from "./data/getCalendarEvents";
 import * as firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import getNews from './data/news'
 
 export default function App(props) {
   // const [isLoggedIn, setIsLooggedIn] = useState(false)
@@ -90,6 +91,16 @@ function Home(props) {
 }, [props.calendar_events]);
 
 
+  const setAttendees = (event) => {
+    let email_string = ""
+    if(event.attendees) {
+      event.attendees.map((usr)=>{
+        email_string += usr.email + " "
+      })
+      return email_string
+    }
+  }
+
   const sortMeetingsList = () => {
     if (meetingsList) {
       meetingsList.items.sort(function(a, b) {
@@ -120,6 +131,11 @@ function Home(props) {
     return meetingsMap
   }
 
+  const getNewsArticles = (query) => {
+    // var data = null
+    getNews(query).then(response => console.log(response))
+  }
+
   const renderCardsDateMap = () => {
     const meetingsMap = mappifyMeetingsList()
     var meetingDates = Array.from(meetingsMap.keys());
@@ -146,6 +162,7 @@ function Home(props) {
                 description={event.description!=="" ? event.description : "No Event Description"}
                 email={event.creator.email}
                 isFirst
+                workplace={"google"}
                 />
           </div>
               )
@@ -166,6 +183,7 @@ function Home(props) {
                     title={event.creator.email}
                     description={event.description!=="" ? event.description : "No Event Description"}
                     email={event.creator.email}
+                    workplace={"google"}
                   />
             </div> :
                 <div>
@@ -181,6 +199,7 @@ function Home(props) {
                     title={event.creator.email}
                     description={event.description!=="" ? event.description : "No Event Description"}
                     email={event.creator.email}
+                    workplace={"google"}
                   />
             </div>
               )
@@ -194,7 +213,8 @@ function Home(props) {
 
   return (
     <div>
-      <button onClick={() => setupdateCalendar(!updateCalendar)}>
+      {/* <h1 className="App-title"> NEXT MEETING:</h1> */}
+      <button onClick={() => getNewsArticles("Google")}>
         Refresh Calendar
       </button>
       {renderCardsDateMap()}

@@ -32,7 +32,7 @@ const content = {"installed":{"client_id":"519882293144-ho53n19447o521tg4jtgngig
 
 var oAuth2Client;
 
-//console.log(fs);
+////console.log(fs);
 // Load client secrets from a local file.
 authorize(content, listLabels);
 
@@ -63,7 +63,7 @@ function getNewToken(oAuth2Client, callback) {
     access_type: 'online',
     scope: SCOPES,
   });
-  console.log('Authorize this app by visiting this url:', authUrl);
+  //console.log('Authorize this app by visiting this url:', authUrl);
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -76,7 +76,7 @@ function getNewToken(oAuth2Client, callback) {
       // Store the token to disk for later program executions
       fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
         if (err) return console.error(err);
-        console.log('Token stored to', TOKEN_PATH);
+        //console.log('Token stored to', TOKEN_PATH);
       });
       callback(oAuth2Client);
     });
@@ -94,7 +94,7 @@ function transformMeetingAddressesForQuery(email_arr) {
     meeting_attendees.map((email) => {
       str = str + email + ", "
     })
-    console.log(str)
+    // //console.log(str)
     return str;
   }
 }
@@ -105,22 +105,8 @@ function transformMeetingAddressesForQuery(email_arr) {
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-function listLabels(token2) {
-  /*const gmail = google.gmail({version: 'v1', auth});
-  gmail.users.labels.list({
-    userId: 'me',
-  }, (err, res) => {
-    if (err) return console.log('The API returned an error: ' + err);
-    const labels = res.data.labels;
-    if (labels.length) {
-      console.log('Labels:');
-      labels.forEach((label) => {
-        console.log(`- ${label.name}`);
-      });
-    } else {
-      console.log('No labels found.');
-    }
-  });*/
+function listLabels(token2,query, callb) {
+  //console.log("QUERY:" + query);
   const {client_secret, client_id, redirect_uris} = content.installed;
   oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
@@ -128,26 +114,29 @@ function listLabels(token2) {
   // filename:ics pulls emails with calendar events
 
   // Check if we have previously stored a token.
-    oAuth2Client.setCredentials(token2);
+  oAuth2Client.setCredentials(token2);
   var auth = oAuth2Client;
   const gmail = google.gmail({version: 'v1', auth});
   gmail.users.messages.list({
     userId: 'me',
     maxResults: 1,
-    //q: 'from:jonathandai1226@gmail.com',
-    q: transformMeetingAddressesForQuery(meeting_attendees),
+    q: query,
+    // q: transformMeetingAddressesForQuery(meeting_attendees),
   }, (err, res) => {
-    if(err) return console.log('Err: ' + err);
-    console.log(res)
+    if(err) return //console.log('Err: ' + err);
+    // //console.log(res)
     const mess = res.data.messages;
     if(mess && mess.length){
-      console.log('Messages:');
+      // //console.log('Messages:');
       mess.forEach((mes) => {
-        console.log(`- ${mes.id}`);
-        getMessage(auth, 'me', mes.id);
+        //console.log(`- ${mes.id}`);
+        getMessage(auth, 'me', mes.id, function(results){
+          callb(results);
+        });
       });
     } else {
-      console.log('No messages found.');
+      //console.log('No messages found.');
+      return "no message";
     }
   });
 }
@@ -165,15 +154,15 @@ function listFirstMessage(token2){
     userId: 'me',
     maxResults: 1,
   }, (err, res) => {
-    if(err) return console.log('Err: ' + err);
+    if(err) return //console.log('Err: ' + err);
     const mess = res.data.messages;
     if(mess.length){
-      console.log('Messages:');
+      //console.log('Messages:');
       mess.forEach((mes) => {
-        console.log(`- ${mes.id}`);
+        //console.log(`- ${mes.id}`);
       });
     } else {
-      console.log('No messages found.');
+      //console.log('No messages found.');
     }
   });
 }
@@ -186,19 +175,33 @@ function listFirstMessage(token2){
  * @param  {String} messageId ID of Message to get.
  * @param  {Function} callback Function to call when the request is complete.
  */
-function getMessage(auth=oAuth2Client, userId, messageId) {
+function getMessage(auth=oAuth2Client, userId, messageId, callback) {
   const gmail = google.gmail({version: 'v1', auth});
   gmail.users.messages.get({
     userId: userId,
     id: messageId,
   }, (err, res) => {
-    if(err) return console.log('Err: ' + err);
-    const mess = res.data["payload"]["parts"][0]["body"]["data"];
-    //console.log(res.data["payload"]["body"]);
-    //console.log(res);
-    console.log(Buffer.from(mess, 'base64').toString());
-    const readableMessage = Buffer.from(mess, 'base64').toString();
-    //console.log(readableMessage);
+    if(err) return //console.log('Err: ' + err);
+    //console.log(res.data);
+    if(res.data["payload"]["parts"]){
+      const mess = res.data["payload"]["parts"][0]["body"]["data"];
+
+      ////console.log(res.data["payload"]["body"]);
+      ////console.log(res);
+      if(typeof mess == "string"){
+        // console.log(Buffer.from(mess, 'base64').toString());
+        //const readableMessage =
+        callback(Buffer.from(mess, 'base64').toString());
+      }
+    }
+    else if (res.data["payload"]["body"]["size"] != 0){
+      const mess = res.data["payload"]["body"]["data"];
+      if(typeof mess == "string"){
+        // console.log(Buffer.from(mess, 'base64').toString());
+        callback(Buffer.from(mess, 'base64').toString());
+      }
+    }
+    ////console.log(readableMessage);
   });
 }
 
@@ -209,9 +212,9 @@ function getAttachment(auth=oAuth2Client, userId, messageId, attachmentId){
     messageId: messageId,
     userId: userId
   }, (err,res) => {
-    if(err) return console.log('Err: ' + err);
+    if(err) return //console.log('Err: ' + err);
     const attach = res.data;
-    console.log(attach);
+    //console.log(attach);
   });
 }
 // [END gmail_quickstart]
