@@ -27,7 +27,7 @@ const Card = ({
       console.log(results);
       //emailBody = results;
       alert(results);
-      if(meetingAttendees.length != 0){
+      if(meetingAttendees){
         document.getElementById(meetingAttendees).innerHTML = results;
       }
     });
@@ -45,10 +45,10 @@ const Card = ({
   }, [isExpanded]);
 
     return (
-      <div onClick={() => setIsExpanded(!isExpanded)}>
-        {isExpanded || !isFirst ?
-          (<div className="card-container">
-            <div className="card-header">
+      <div onClick={() => isExpanded ? {} : setIsExpanded(!isExpanded)}>
+        {isExpanded || isFirst ?
+          (<div className="card-container" >
+            <div className="card-header" onClick={() => setIsExpanded(!isExpanded)}>
               <p>
                 {startTime} - {endTime}
               </p>
