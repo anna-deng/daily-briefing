@@ -94,7 +94,7 @@ function Home(props) {
   const setAttendees = (event) => {
     let email_string = ""
     if(event.attendees) {
-      event.attendees.map((usr)=>{
+      event.attendees.map((usr, i)=>{
         email_string += usr.email + " "
       })
       return email_string
@@ -156,6 +156,7 @@ function Home(props) {
                 title={event.creator.email}
                 description={event.description!=="" ? event.description : "No Event Description"}
                 email={event.creator.email}
+                meetingAttendees={setAttendees(event)}
                 isFirst
                 workplace={"google"}
                 />
@@ -178,6 +179,7 @@ function Home(props) {
                     title={event.creator.email}
                     description={event.description!=="" ? event.description : "No Event Description"}
                     email={event.creator.email}
+                    meetingAttendees={setAttendees(event)}
                     workplace={"google"}
                   />
             </div> :
@@ -194,6 +196,7 @@ function Home(props) {
                     title={event.creator.email}
                     description={event.description!=="" ? event.description : "No Event Description"}
                     email={event.creator.email}
+                    meetingAttendees={setAttendees(event)}
                     workplace={"google"}
                   />
             </div>
