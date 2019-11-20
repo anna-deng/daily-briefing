@@ -158,7 +158,7 @@ function Home(props) {
                 email={event.creator.email}
                 meetingAttendees={setAttendees(event)}
                 isFirst
-                workplace={"google"}
+                workplace={"Northwestern University"}
                 />
           </div>
               )
@@ -180,7 +180,7 @@ function Home(props) {
                     description={event.description!=="" ? event.description : "No Event Description"}
                     email={event.creator.email}
                     meetingAttendees={setAttendees(event)}
-                    workplace={"google"}
+                    workplace={"Northwestern University"}
                   />
             </div> :
                 <div>
@@ -197,7 +197,7 @@ function Home(props) {
                     description={event.description!=="" ? event.description : "No Event Description"}
                     email={event.creator.email}
                     meetingAttendees={setAttendees(event)}
-                    workplace={"google"}
+                    workplace={"Northwestern University"}
                   />
             </div>
               )
