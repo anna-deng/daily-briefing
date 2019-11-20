@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./card.css";
+import getNews from '../../data/news'
 
 import gmail from '../../data/gmail';
 import { gapi, loadAuth2 } from 'gapi-script'
@@ -15,6 +16,7 @@ const Card = ({
   isFirst,
   meetingAttendees,
   emailBody,
+  workplace
 }) => {
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -29,6 +31,11 @@ const Card = ({
         document.getElementById(meetingAttendees).innerHTML = results;
       }
     });
+  }
+
+  const getNewsArticles = (query) => {
+    // var data = null
+    getNews(query).then(response => console.log(response))
   }
 
 
@@ -57,6 +64,7 @@ const Card = ({
               <p>{meetingAttendees}</p>
               <p id={meetingAttendees}></p>
               <button onClick={()=>pullEmails()}>pull emails</button>
+              <button onClick={()=>getNewsArticles(workplace)}>pull news articles</button>
             </div>
           </div>)
         :
