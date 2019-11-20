@@ -214,9 +214,9 @@ function Home(props) {
   return (
     <div>
       {/* <h1 className="App-title"> NEXT MEETING:</h1> */}
-      <button onClick={() => getNewsArticles("Google")}>
+      {/* <button onClick={() => getNewsArticles("Google")}>
         Refresh Calendar
-      </button>
+      </button> */}
       {renderCardsDateMap()}
     </div>
   );
