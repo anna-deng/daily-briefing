@@ -138,7 +138,7 @@ class Auth extends Component {
           this.updateCalendar(res.result)
           // console.log(this.state.calendar_events)
         });
-        gmail.listLabels(gapi.client.getToken());
+        // gmail.listLabels(gapi.client.getToken());
       }
 
     render() {
