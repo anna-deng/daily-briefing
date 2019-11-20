@@ -35,7 +35,10 @@ const Card = ({
 
   const getNewsArticles = (query) => {
     // var data = null
-    getNews(query).then(response => console.log(response))
+    getNews(query).then(response => {
+      console.log(response)
+      alert(response.articles[0].title + '\n' + response.articles[1].title + '\n' + response.articles[2].title)
+    })
   }
 
 
