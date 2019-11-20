@@ -48,16 +48,16 @@ class Auth extends Component {
 
       const successCallback = this.onSuccess.bind(this);
       const updateCalendar = this.updateCalendar.bind(this);
-      
+
       window.gapi.load('client:auth2', () => {
         this.auth2 = window.gapi.auth2.init({
           clientId: firebaseConfig.clientId,
           scope: firebaseConfig.scopes,
           discoveryDocs: firebaseConfig.discoveryDocs
         })
-  
+
         // this.auth2.attachClickHandler(document.querySelector('#loginButton'), {}, this.onLoginSuccessful.bind(this))
-  
+
         this.auth2.then(() => {
           console.log('on init');
           console.log(this.auth2.currentUser.get().getBasicProfile().getName())
@@ -65,7 +65,7 @@ class Auth extends Component {
             isSignedIn: this.auth2.isSignedIn.get(),
           });
         });
-      })  
+      })
 
       window.gapi.load('signin2', function() {
         // Method 3: render a sign in button
@@ -95,7 +95,7 @@ class Auth extends Component {
         calendar_events: data
       })
     }
-  
+
     onLoginFailed(err) {
       this.setState({
         isSignedIn: false,
@@ -138,7 +138,7 @@ class Auth extends Component {
           this.updateCalendar(res.result)
           // console.log(this.state.calendar_events)
         });
-        gmail.listLabels(gapi.client.getToken());
+        //gmail.listLabels(gapi.client.getToken());
       }
 
     render() {

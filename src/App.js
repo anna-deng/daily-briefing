@@ -123,7 +123,7 @@ function Home(props) {
     sortMeetingsList();
     return (
       <div>
-      {meetingsList && 
+      {meetingsList &&
         <Card
           startTime={new Date(
             meetingsList.items[0].start.dateTime

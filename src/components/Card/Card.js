@@ -23,7 +23,11 @@ const Card = ({
     console.log(meetingAttendees);
     gmail.listLabels(gapi.client.getToken(), meetingAttendees, function(results){
       console.log(results);
-      emailBody = results;
+      //emailBody = results;
+      alert(results);
+      if(meetingAttendees.length != 0){
+        document.getElementById(meetingAttendees).innerHTML = results;
+      }
     });
   }
 
@@ -35,7 +39,7 @@ const Card = ({
 
     return (
       <div onClick={() => setIsExpanded(!isExpanded)}>
-        {isExpanded || isFirst ?
+        {isExpanded || !isFirst ?
           (<div className="card-container">
             <div className="card-header">
               <p>
@@ -51,7 +55,7 @@ const Card = ({
               <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a>
               <p className="card-description" dangerouslySetInnerHTML={{ __html: description}}></p>
               <p>{meetingAttendees}</p>
-              <p>{emailBody}</p>
+              <p id={meetingAttendees}></p>
               <button onClick={()=>pullEmails()}>pull emails</button>
             </div>
           </div>)
