@@ -20,27 +20,28 @@ const Card = ({
 }) => {
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const [selectedButton, setSelectedButton] = useState(null);
-
+  
   const pullEmails = () => {
-    console.log('meetingAttendees', meetingAttendees);
-    gmail.listLabels(gapi.client.getToken(), meetingAttendees, function(results){
-      console.log(results);
-      //emailBody = results;
-      alert(results);
-      console.log('alskdfjsld', startTime + meetingTitle)
-      if(meetingAttendees){
-        document.getElementById(meetingAttendees).innerHTML = results;
-      }
-    });
+    const meeting = meetingAttendees.split(" ")
+    if(meeting.length == 2) {
+      alert("You are the only attendee on this event, no emails to pull!")
+    }
+    else {
+      gmail.listLabels(gapi.client.getToken(), meetingAttendees, function(results){
+        alert(results);
+        if(meetingAttendees){
+          document.getElementById(meetingAttendees).innerHTML = results;
+        }
+      });
+    }
   }
 
   const getNewsArticles = (query) => {
-    // var data = null
-    getNews(query).then(response => console.log(response))
+    getNews(query).then(response => {
+      console.log(response)
+      alert(response.articles[0].title + '\n' + response.articles[1].title + '\n' + response.articles[2].title)
+    })
   }
-
-
 
   useEffect(() => {
     console.log('toggle')
