@@ -129,13 +129,8 @@ function listLabels(token2,query) {
     if(mess && mess.length){
       // console.log('Messages:');
       mess.forEach((mes) => {
-<<<<<<< HEAD
-        // console.log(`- ${mes.id}`);
-        getMessage(auth, 'me', mes.id);
-=======
         console.log(`- ${mes.id}`);
         return getMessage(auth, 'me', mes.id);
->>>>>>> a9f7d0079e460d4d30fd9233971187ee1a77296d
       });
     } else {
       console.log('No messages found.');
