@@ -148,7 +148,7 @@ function Home(props) {
               // first calendar event for first day
               return(
                 <div>
-                <p className='happening-soon'>Happening Soon</p>
+                <p className='event-date'>Happening Soon</p>
                 <Card
                 startTime={new Date(
                   meetingsList.items[0].start.dateTime

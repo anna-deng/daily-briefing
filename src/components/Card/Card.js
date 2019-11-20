@@ -16,17 +16,19 @@ const Card = ({
   isFirst,
   meetingAttendees,
   emailBody,
-  workplace
+  workplace,
 }) => {
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(null);
 
   const pullEmails = () => {
-    console.log(meetingAttendees);
+    console.log('meetingAttendees', meetingAttendees);
     gmail.listLabels(gapi.client.getToken(), meetingAttendees, function(results){
       console.log(results);
       //emailBody = results;
       alert(results);
+      console.log('alskdfjsld', startTime + meetingTitle)
       if(meetingAttendees){
         document.getElementById(meetingAttendees).innerHTML = results;
       }
@@ -70,8 +72,38 @@ const Card = ({
               <p className="card-description" dangerouslySetInnerHTML={{ __html: description}}></p>
               <p>{meetingAttendees}</p>
               <p id={meetingAttendees}></p>
-              <button onClick={()=>pullEmails()}>pull emails</button>
-              <button onClick={()=>getNewsArticles(workplace)}>pull news articles</button>
+              <button className={"card-email-button card-button" + (selectedButton == 'email' ? ' selected-button' : '')}
+                      onClick={()=> {
+                        if (selectedButton == 'email') {
+                          setSelectedButton(null)
+                        } else {
+                          pullEmails()
+                          setSelectedButton('email')
+                        }
+                        }}>
+                        <i class="material-icons">forum</i>
+              </button>
+              <button className={"card-news-button card-button" + (selectedButton == 'news' ? ' selected-button' : '')}
+                      onClick={()=>{
+                        if (selectedButton == 'news') {
+                          setSelectedButton(null)
+                        } else {
+                          getNewsArticles(workplace)
+                          setSelectedButton('news')
+                        }
+                        }}>
+                      <i class="material-icons">rss_feed</i>
+              </button>
+              <button className={"card-contact-button card-button" + (selectedButton == 'contact' ? ' selected-button' : '')}
+                      onClick={()=>{
+                        if (selectedButton == 'contact') {
+                          setSelectedButton(null)
+                        } else {
+                          setSelectedButton('contact')
+                        }
+                      }}>
+                        <i class="material-icons">perm_contact_calendar</i>
+              </button> 
             </div>
           </div>)
         :

@@ -109,3 +109,40 @@ h1 {
 hr {
   border: 0.5px solid #ccc;
 }
+
+.card-button{
+  background: #f49999;
+  border: 0px solid transparent;
+  padding: 15px 12%;
+  color: #fff;
+  font-family: 'Rubik', sans-serif;
+  transition: .2s ease-in-out;
+}
+
+.card-button:hover{
+  color: #f49999;
+  background: #fff;
+}
+
+.card-email-button{
+  border-right: 5px solid #fff;
+  border-radius: 10px 0px 0px 10px;
+}
+
+.card-news-button{
+  border-right: 5px solid #fff;
+}
+
+.card-contact-button{
+  border-radius: 0px 10px 10px 0px;
+}
+
+.selected-button {
+  background: white;
+  color: #f49999;
+}
+
+.selected-button:hover{
+  background: white;
+  color: #f49999;
+}
