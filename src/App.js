@@ -6,9 +6,7 @@ import "./data/getCalendarEvents";
 import { getEvents } from "./data/getCalendarEvents";
 import * as firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-
-// Configure FirebaseUI.
-// Configure FirebaseUI.
+import getNews from './data/news'
 
 export default function App(props) {
   // const [isLoggedIn, setIsLooggedIn] = useState(false)
@@ -89,23 +87,18 @@ function Home(props) {
   const [hasPulledEmails, updateHasPulledEmails] = useState(false)
 
   useEffect(() => {
-    // var data;
-    // getEvents().then(response => {
-    //   data = response;
-    //   console.log(props.calendar_events)
-    //   setMeetingsList(data);
-    //   console.log(data);
-    // });
     setMeetingsList(props.calendar_events)
 }, [props.calendar_events]);
 
 
   const setAttendees = (event) => {
     let email_string = ""
-    event.attendees.map((usr)=>{
-      email_string += usr.email + " "
-    })
-    return email_string
+    if(event.attendees) {
+      event.attendees.map((usr)=>{
+        email_string += usr.email + " "
+      })
+      return email_string
+    }
   }
 
   const sortMeetingsList = () => {
@@ -115,72 +108,116 @@ function Home(props) {
       });
       meetingsList.items = meetingsList.items.filter(function(event) {
         return new Date(event.start.dateTime) >= new Date(Date.now());
-      });
+      })
     }
-  };
+  }
+  
+  // meetingsList: sorted [] of event objects 
+  // transformed to: {date1: [event1, event2], date2:[event3]}
+  const mappifyMeetingsList = () => {
+    sortMeetingsList() 
+    const meetingsMap = new Map();
+    if(meetingsList) {
+    meetingsList.items.map((event, i) => {
+      const date = new Date(event.start.dateTime).toLocaleDateString([], {month: 'short', day: 'numeric', year: 'numeric'})
+      if(meetingsMap.has(date)) {
+        meetingsMap.get(date).push(event)
+      }
+      else {
+        meetingsMap.set(date, [event])
+      }
+    })
+  }
+    return meetingsMap
+  }
 
-  const renderCards = () => {
-    sortMeetingsList();
+  const getNewsArticles = (query) => {
+    // var data = null
+    getNews(query).then(response => console.log(response))
+  }
+
+  const renderCardsDateMap = () => {
+    const meetingsMap = mappifyMeetingsList()
+    var meetingDates = Array.from(meetingsMap.keys());
     return (
       <div>
-      {meetingsList && 
-        <Card
-          startTime={new Date(
-            meetingsList.items[0].start.dateTime
-          ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-          endTime={new Date(
-            meetingsList.items[0].end.dateTime
-          ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-          meetingTitle={meetingsList.items[0].summary}
-          name={"Anna Deng"} // from LinkedIn
-          title={"Student at Northwestern University"}
-          description={"let's find a time to work on 338 together..."}
-          email={meetingsList.items[0].creator.email}
-          meetingAttendees={attendees}
-          isFirst
-        />}
-      {meetingsList &&
-      meetingsList.items.map((event, i) => {
-        // console.log(attendees)
-        // if(event.attendees && !hasPulledEmails) {
-        //   updateHasPulledEmails(true)
-        //   event.attendees.forEach(user => {
-        //     if(!attendees.includes(user.email)) {
-        //       updateAttendees(attendees.push(user.email))
-        //     }
-        //   });
-        // }
-        return i !== 0 ? (
-          <div>
-            <Card
-              startTime={new Date(
-                event.start.dateTime
-              ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-              endTime={new Date(
-                event.end.dateTime
-              ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-              meetingTitle={event.summary}
-              name={event.creator.displayName ? event.creator.displayName : event.creator.email} // from LinkedIn
-              title={event.creator.email}
-              description={event.description!=="" ? event.description : "No Event Description"}
-              email={event.creator.email}
-              meetingAttendees={setAttendees(event)}
-            />
+        {meetingsMap && 
+       meetingDates.map((date, d)=>{
+          return meetingsMap.get(date).map((event, e)=>{
+            if(d == 0 && e == 0) {
+              // first calendar event for first day
+              return(
+                <div>
+                <p className='happening-soon'>Happening Soon</p>
+                <Card
+                startTime={new Date(
+                  meetingsList.items[0].start.dateTime
+                ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                endTime={new Date(
+                  meetingsList.items[0].end.dateTime
+                ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                meetingTitle={meetingsList.items[0].summary}
+                name={event.creator.displayName ? event.creator.displayName : event.creator.email} // from LinkedIn
+                title={event.creator.email}
+                description={event.description!=="" ? event.description : "No Event Description"}
+                email={event.creator.email}
+                isFirst
+                workplace={"google"}
+                />
           </div>
-        ) : null
+              )
+            }
+            else {
+              return( e == 0 ? 
+                <div>
+                  <p className='event-date'>{date}</p>
+                  <Card
+                    startTime={new Date(
+                      event.start.dateTime
+                    ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    endTime={new Date(
+                      event.end.dateTime
+                    ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    meetingTitle={event.summary}
+                    name={event.creator.displayName ? event.creator.displayName : event.creator.email} // from LinkedIn
+                    title={event.creator.email}
+                    description={event.description!=="" ? event.description : "No Event Description"}
+                    email={event.creator.email}
+                    workplace={"google"}
+                  />
+            </div> :
+                <div>
+                  <Card
+                    startTime={new Date(
+                      event.start.dateTime
+                    ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    endTime={new Date(
+                      event.end.dateTime
+                    ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    meetingTitle={event.summary}
+                    name={event.creator.displayName ? event.creator.displayName : event.creator.email} // from LinkedIn
+                    title={event.creator.email}
+                    description={event.description!=="" ? event.description : "No Event Description"}
+                    email={event.creator.email}
+                    workplace={"google"}
+                  />
+            </div>
+              )
+            }
+          })
         })
-      }
-    </div>
+        }
+      </div>
     )
-  };
+  }
 
   return (
     <div>
       {/* <h1 className="App-title"> NEXT MEETING:</h1> */}
-      <button onClick={() => setupdateCalendar(!updateCalendar)}>
+      {/* <button onClick={() => getNewsArticles("Google")}>
         Refresh Calendar
-      </button>
-      {renderCards()}
+      </button> */}
+      {renderCardsDateMap()}
     </div>
   );
 }
