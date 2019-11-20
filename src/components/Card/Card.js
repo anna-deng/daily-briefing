@@ -20,19 +20,26 @@ const Card = ({
 }) => {
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(null);
   
   const pullEmails = () => {
-    const meeting = meetingAttendees.split(" ")
-    if(meeting.length == 2) {
+    console.log(meetingAttendees)
+    if(!meetingAttendees) {
       alert("You are the only attendee on this event, no emails to pull!")
     }
-    else {
-      gmail.listLabels(gapi.client.getToken(), meetingAttendees, function(results){
-        alert(results);
-        if(meetingAttendees){
-          document.getElementById(meetingAttendees).innerHTML = results;
-        }
-      });
+    else if(meetingAttendees) {
+      const meeting = meetingAttendees.split(" ")
+      if(meeting.length == 2) {
+        alert("You are the only attendee on this event, no emails to pull!")
+      } 
+      else {
+        gmail.listLabels(gapi.client.getToken(), meetingAttendees, function(results){
+          alert(results);
+          if(meetingAttendees){
+            // document.getElementById(meetingAttendees).innerHTML = results;
+          }
+        });
+      }
     }
   }
 
