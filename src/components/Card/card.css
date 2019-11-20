@@ -1,6 +1,7 @@
 .preview-card-container {
   border-radius: 10px;
-  width: 337px;
+  /* width: 337px; */
+  width: 400px;
   font-family: "Rubik";
   padding: 0px;
   box-sizing: border-box;
@@ -38,7 +39,8 @@
 
 .card-container {
   border-radius: 10px;
-  width: 337px;
+  /* width: 337px; */
+  width: 400px;
   font-family: "Rubik";
   padding: 0px;
   box-sizing: border-box;

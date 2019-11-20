@@ -43,6 +43,25 @@ const Card = ({
     }
   }
 
+  const makeEmailsLinks = () => {
+    // var result = ''
+    if(meetingAttendees) {
+      const arrayOfEmails = meetingAttendees.split(" ")
+      // if(meeting.length == 2) {
+      //   alert("You are the only attendee on this event, no emails to pull!")
+      // } 
+      return (
+      <div>
+      {arrayOfEmails.map((email, i) => {
+        return (
+          <div>
+            <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`}>{email}</a>
+          </div>)
+      })}
+      </div>
+      )
+  }}
+
   const getNewsArticles = (query) => {
     getNews(query).then(response => {
       console.log(response)
@@ -78,7 +97,8 @@ const Card = ({
               </p>
               {/* <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a> */}
               <p className="card-description" dangerouslySetInnerHTML={{ __html: description}}></p>
-              <p>{meetingAttendees}</p>
+              {/* <p>{meetingAttendees}</p> */}
+              <div>{makeEmailsLinks()}</div>
               <p id={meetingAttendees}></p>
               <button className={"card-email-button card-button" + (selectedButton == 'email' ? ' selected-button' : '')}
                       onClick={()=> {
@@ -102,12 +122,14 @@ const Card = ({
                         }}>
                       <i class="material-icons">rss_feed</i>
               </button>
-              <button className={"card-contact-button card-button" + (selectedButton == 'contact' ? ' selected-button' : '')}
+              {/* <button className={"card-contact-button card-button" + (selectedButton == 'contact' ? ' selected-button' : '')} */}
+              <button className={"card-contact-button card-button"}
                       onClick={()=>{
                         if (selectedButton == 'contact') {
                           setSelectedButton(null)
                         } else {
                           setSelectedButton('contact')
+                          window.open(`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`)
                         }
                       }}>
                         <i class="material-icons">perm_contact_calendar</i>
