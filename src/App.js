@@ -131,11 +131,6 @@ function Home(props) {
     return meetingsMap
   }
 
-  const getNewsArticles = (query) => {
-    // var data = null
-    getNews(query).then(response => console.log(response))
-  }
-
   const renderCardsDateMap = () => {
     const meetingsMap = mappifyMeetingsList()
     var meetingDates = Array.from(meetingsMap.keys());
