@@ -180,13 +180,24 @@ function getMessage(auth=oAuth2Client, userId, messageId) {
   }, (err, res) => {
     if(err) return console.log('Err: ' + err);
     console.log(res.data);
-    const mess = res.data["payload"]["parts"][0]["body"]["data"];
-    //console.log(res.data["payload"]["body"]);
-    //console.log(res);
-    if(typeof mess == "string"){
-      console.log(Buffer.from(mess, 'base64').toString());
-      //const readableMessage =
-      return Buffer.from(mess, 'base64').toString();
+
+    if(res.data["payload"]["parts"]){
+      const mess = res.data["payload"]["parts"][1]["body"]["data"];
+
+      //console.log(res.data["payload"]["body"]);
+      //console.log(res);
+      if(typeof mess == "string"){
+        console.log(Buffer.from(mess, 'base64').toString());
+        //const readableMessage =
+        return Buffer.from(mess, 'base64').toString();
+      }
+    }
+    else if (res.data["payload"]["body"]["size"] != 0){
+      const mess = res.data["payload"]["body"]["data"];
+      if(typeof mess == "string"){
+        console.log(Buffer.from(mess, 'base64').toString());
+        return Buffer.from(mess, 'base64').toString();
+      }
     }
     //console.log(readableMessage);
   });
