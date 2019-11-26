@@ -187,7 +187,7 @@ function Home(props) {
   
   const renderPrimaryView = () => {
     return (
-      <div class='primary-view-container'>
+      <div className='primary-view-container'>
         {selectedEvent &&
                 <PrimaryView
                 startTime={new Date(

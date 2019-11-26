@@ -25,18 +25,28 @@ const PrimaryView = ({
   const pullEmails = () => {
     console.log(meetingAttendees)
     if(!meetingAttendees) {
-      alert("You are the only attendee on this event, no emails to pull!")
+      return (<p>
+        You are the only attendee on this event, no emails to pull!
+      </p>)
     }
     else if(meetingAttendees) {
       const meeting = meetingAttendees.split(" ")
       if(meeting.length == 2) {
-        alert("You are the only attendee on this event, no emails to pull!")
-      } 
+        return(<p>
+          You are the only attendee on this event, no emails to pull!
+        </p>)
+      }
       else {
         gmail.listLabels(gapi.client.getToken(), meetingAttendees, function(results){
-          alert(results);
+          console.log('going to return');
+          console.log(results);
+          // return(
+          // <p>
+          //   {results}
+          // </p>)  
+          // alert(results)        
           if(meetingAttendees){
-            // document.getElementById(meetingAttendees).innerHTML = results;
+            return(<p>{results}</p>);
           }
         });
       }
@@ -64,8 +74,9 @@ const PrimaryView = ({
 
   const getNewsArticles = (query) => {
     getNews(query).then(response => {
-      console.log(response)
+      // console.log(response);
       alert(response.articles[0].title + '\n' + response.articles[1].title + '\n' + response.articles[2].title)
+      return(<p>{response.articles[0].title}</p>)
     })
   }
 
@@ -74,20 +85,20 @@ const PrimaryView = ({
   }, [isExpanded]);
 
     return (
-      <div onClick={() => isExpanded ? {} : setIsExpanded(!isExpanded)}>
-          <div className="card-container" >
-            <div className="card-header" onClick={() => setIsExpanded(!isExpanded)}>
+      <div>
+          <div className="preview-view-container" >
+            <div className="preview-view-header">
               <p>
                 {startTime} - {endTime}
               </p>
             </div>
-            <div className="card-body">
+            <div className="preview-view-body">
               <h1>{meetingTitle}</h1>
               <hr />
-              <p className="card-name-email">
-                <span className="card-name">
+              <p className="preview-view-name-email">
+                <span className="preview-view-name">
                   <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">{name}</a>
-                  {/* <i class="material-icons card-name-icon">
+                  {/* <i class="material-icons preview-view-name-icon">
                     info
                   </i> */}
                 </span> 
@@ -95,11 +106,13 @@ const PrimaryView = ({
                 {title}
               </p>
               {/* <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a> */}
-              <p className="card-description" dangerouslySetInnerHTML={{ __html: description}}></p>
+              <p className="preview-view-description" dangerouslySetInnerHTML={{ __html: description}}></p>
               {/* <p>{meetingAttendees}</p> */}
               <div>{makeEmailsLinks()}</div>
               <p id={meetingAttendees}></p>
-              <button className={"card-email-button card-button" + (selectedButton == 'email' ? ' selected-button' : '')}
+              <div>{pullEmails()}</div>
+              <div>{getNewsArticles(workplace)}</div>
+              {/* <button className={"preview-view-email-button preview-view-button" + (selectedButton == 'email' ? ' selected-button' : '')}
                       onClick={()=> {
                         if (selectedButton == 'email') {
                           setSelectedButton(null)
@@ -109,8 +122,8 @@ const PrimaryView = ({
                         }
                         }}>
                         <i class="material-icons">forum</i>
-              </button>
-              <button className={"card-news-button card-button" + (selectedButton == 'news' ? ' selected-button' : '')}
+              </button> */}
+              {/* <button className={"preview-view-news-button preview-view-button" + (selectedButton == 'news' ? ' selected-button' : '')}
                       onClick={()=>{
                         if (selectedButton == 'news') {
                           setSelectedButton(null)
@@ -120,9 +133,9 @@ const PrimaryView = ({
                         }
                         }}>
                       <i class="material-icons">rss_feed</i>
-              </button>
-              {/* <button className={"card-contact-button card-button" + (selectedButton == 'contact' ? ' selected-button' : '')} */}
-              <button className={"card-contact-button card-button"}
+              </button> */}
+              {/* <button className={"preview-view-contact-button preview-view-button" + (selectedButton == 'contact' ? ' selected-button' : '')} */}
+              <button className={"preview-view-contact-button preview-view-button"}
                       onClick={()=>{
                         if (selectedButton == 'contact') {
                           setSelectedButton(null)
