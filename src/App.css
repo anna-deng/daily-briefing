@@ -39,3 +39,15 @@ line-height: 150%;
   text-transform: uppercase;
   margin: 50px 25px 10px 25px;
 }
+
+.cards-container {
+  width: 33%;
+  height: 100%;
+  overflow: scroll;
+  position: fixed;
+}
+
+.primary-view-container {
+  width: 67%;
+  float: right;
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Card from "./components/Card/Card";
+import PrimaryView from "./components/PrimaryView/PrimaryView";
 import "./data/getCalendarEvents";
 import { getEvents } from "./data/getCalendarEvents";
 import * as firebase from "firebase";
@@ -9,58 +10,6 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import getNews from './data/news'
 
 export default function App(props) {
-  // const [isLoggedIn, setIsLooggedIn] = useState(false)
-  // useEffect(() => {
-  //   this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
-  //     (user) => setIsLooggedIn(!!user)
-  //   );
-  // })
-  // useEffect(() => {
-  //   this.unregisterAuthObserver();
-  // }, [isLoggedIn])
-
-  // var uiConfig = {
-  //   // Popup signin flow rather than redirect flow.
-  //   signInFlow: 'popup',
-  //   // We will display Google and Facebook as auth providers.
-  //   signInOptions: [
-  //     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-  //     firebase.auth.FacebookAuthProvider.PROVIDER_ID
-  //   ],
-  //   callbacks: {
-  //     // Avoid redirects after sign-in.
-  //     signInSuccessWithAuthResult: () => false
-  //   }
-  // };
-
-  // if (!isLoggedIn) {
-  //   return (
-  //     <div>
-  //       <h1>My App</h1>
-  //       <p>Please sign-in:</p>
-  //       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
-  //     </div>
-  //   );
-  // }
-  // else {
-  //   return (
-  //     <Router>
-  //       <div>
-  //         <Switch>
-  //           <Route path="/about">
-  //             <About />
-  //           </Route>
-  //           <Route path="/users">
-  //             <Users />
-  //           </Route>
-  //           <Route path="/">
-  //             <Home />
-  //           </Route>
-  //         </Switch>
-  //       </div>
-  //     </Router>
-  //   );
-  // }
   return (
     <Router>
       <div>
@@ -84,12 +33,12 @@ function Home(props) {
   const [meetingsList, setMeetingsList] = useState(null);
   const [updateCalendar, setupdateCalendar] = useState(false);
   const [attendees, updateAttendees] = useState([]);
-  const [hasPulledEmails, updateHasPulledEmails] = useState(false)
+  const [hasPulledEmails, updateHasPulledEmails] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
     setMeetingsList(props.calendar_events)
 }, [props.calendar_events]);
-
 
   const setAttendees = (event) => {
     let email_string = ""
@@ -109,6 +58,9 @@ function Home(props) {
       meetingsList.items = meetingsList.items.filter(function(event) {
         return new Date(event.start.dateTime) >= new Date(Date.now());
       })
+      if (selectedEvent == null) {
+        setSelectedEvent(meetingsList.items[0]);
+      }
     }
   }
   
@@ -135,7 +87,7 @@ function Home(props) {
     const meetingsMap = mappifyMeetingsList()
     var meetingDates = Array.from(meetingsMap.keys());
     return (
-      <div>
+      <div className='cards-container'>
         {meetingsMap && 
        meetingDates.map((date, d)=>{
           return meetingsMap.get(date).map((event, e)=>{
@@ -159,6 +111,10 @@ function Home(props) {
                 meetingAttendees={setAttendees(event)}
                 isFirst
                 workplace={"Northwestern University"}
+                setEvent={() => {
+                  setSelectedEvent(event);
+                  console.log('selectedEvent', selectedEvent);
+                }}
                 />
           </div>
               )
@@ -181,6 +137,10 @@ function Home(props) {
                     email={event.creator.email}
                     meetingAttendees={setAttendees(event)}
                     workplace={"Northwestern University"}
+                    setEvent={() => {
+                      setSelectedEvent(event);
+                      console.log('selectedEvent', selectedEvent);
+                    }}
                   />
             </div> :
                 <div>
@@ -198,6 +158,10 @@ function Home(props) {
                     email={event.creator.email}
                     meetingAttendees={setAttendees(event)}
                     workplace={"Northwestern University"}
+                    setEvent={() => {
+                      setSelectedEvent(event);
+                      console.log('selectedEvent', selectedEvent);
+                    }}
                   />
             </div>
               )
@@ -209,6 +173,32 @@ function Home(props) {
     )
   }
 
+  
+  const renderPrimaryView = () => {
+    return (
+      <div class='primary-view-container'>
+        {selectedEvent &&
+                <PrimaryView
+                startTime={new Date(
+                  selectedEvent.start.dateTime
+                  ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  endTime={new Date(
+                    selectedEvent.end.dateTime
+                    ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    meetingTitle={selectedEvent.summary}
+                    name={selectedEvent.creator.displayName ? selectedEvent.creator.displayName : selectedEvent.creator.email} // from LinkedIn
+                    title={selectedEvent.creator.email}
+                description={selectedEvent.description!=="" ? selectedEvent.description : "No event Description"}
+                email={selectedEvent.creator.email}
+                meetingAttendees={setAttendees(selectedEvent)}
+                isFirst
+                workplace={"Northwestern University"}
+                />
+            }
+      </div>
+    )
+  }
+  
   return (
     <div>
       {/* <h1 className="App-title"> NEXT MEETING:</h1> */}
@@ -216,6 +206,7 @@ function Home(props) {
         Refresh Calendar
       </button> */}
       {renderCardsDateMap()}
+      {renderPrimaryView()}
     </div>
   );
 }

@@ -17,6 +17,7 @@ const Card = ({
   meetingAttendees,
   emailBody,
   workplace,
+  setEvent
 }) => {
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -74,79 +75,14 @@ const Card = ({
   }, [isExpanded]);
 
     return (
-      <div onClick={() => isExpanded ? {} : setIsExpanded(!isExpanded)}>
-        {isExpanded || isFirst ?
-          (<div className="card-container" >
-            <div className="card-header" onClick={() => setIsExpanded(!isExpanded)}>
-              <p>
-                {startTime} - {endTime}
-              </p>
-            </div>
-            <div className="card-body">
-              <h1>{meetingTitle}</h1>
-              <hr />
-              <p className="card-name-email">
-                <span className="card-name">
-                  <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">{name}</a>
-                  {/* <i class="material-icons card-name-icon">
-                    info
-                  </i> */}
-                </span> 
-                <br />
-                {title}
-              </p>
-              {/* <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a> */}
-              <p className="card-description" dangerouslySetInnerHTML={{ __html: description}}></p>
-              {/* <p>{meetingAttendees}</p> */}
-              <div>{makeEmailsLinks()}</div>
-              <p id={meetingAttendees}></p>
-              <button className={"card-email-button card-button" + (selectedButton == 'email' ? ' selected-button' : '')}
-                      onClick={()=> {
-                        if (selectedButton == 'email') {
-                          setSelectedButton(null)
-                        } else {
-                          pullEmails()
-                          setSelectedButton('email')
-                        }
-                        }}>
-                        <i class="material-icons">forum</i>
-              </button>
-              <button className={"card-news-button card-button" + (selectedButton == 'news' ? ' selected-button' : '')}
-                      onClick={()=>{
-                        if (selectedButton == 'news') {
-                          setSelectedButton(null)
-                        } else {
-                          getNewsArticles(workplace)
-                          setSelectedButton('news')
-                        }
-                        }}>
-                      <i class="material-icons">rss_feed</i>
-              </button>
-              {/* <button className={"card-contact-button card-button" + (selectedButton == 'contact' ? ' selected-button' : '')} */}
-              <button className={"card-contact-button card-button"}
-                      onClick={()=>{
-                        if (selectedButton == 'contact') {
-                          setSelectedButton(null)
-                        } else {
-                          setSelectedButton('contact')
-                          window.open(`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`)
-                        }
-                      }}>
-                        <i class="material-icons">perm_contact_calendar</i>
-              </button> 
-            </div>
-          </div>)
-        :
-        (<div className="preview-card-container">
+        <div onClick={() => {setEvent()}} className="preview-card-container">
           <div className="preview-card-header">
             <p>{startTime}</p>
           </div>
           <div className="preview-card-body">
             <p className="preview-card-body--text">{meetingTitle}</p>
           </div>
-        </div>)
-        }
-      </div>
+        </div>
     );
 };
 export default Card;
