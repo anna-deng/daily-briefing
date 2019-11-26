@@ -63,6 +63,17 @@ function Home(props) {
       }
     }
   }
+
+  const getDomain = (email) => {
+    var domain = email.replace(/^[^@]*@/, '')
+    if(domain.includes('u.')) {
+      domain = domain.split('u.')[1].split('.')[0]
+    }
+    else {
+      domain = domain.split('.')[0]
+    }
+    return domain
+  }
   
   // meetingsList: sorted [] of event objects 
   // transformed to: {date1: [event1, event2], date2:[event3]}
@@ -110,11 +121,11 @@ function Home(props) {
                 email={event.creator.email}
                 meetingAttendees={setAttendees(event)}
                 isFirst
-                workplace={"Northwestern University"}
                 setEvent={() => {
                   setSelectedEvent(event);
                   console.log('selectedEvent', selectedEvent);
                 }}
+                workplace={getDomain(event.creator.email)}
                 />
           </div>
               )
@@ -136,7 +147,7 @@ function Home(props) {
                     description={event.description!=="" ? event.description : "No Event Description"}
                     email={event.creator.email}
                     meetingAttendees={setAttendees(event)}
-                    workplace={"Northwestern University"}
+                    workplace={event.creator.email.replace(/^[^@]*@/, '').split('.')[0]}
                     setEvent={() => {
                       setSelectedEvent(event);
                       console.log('selectedEvent', selectedEvent);
@@ -157,11 +168,11 @@ function Home(props) {
                     description={event.description!=="" ? event.description : "No Event Description"}
                     email={event.creator.email}
                     meetingAttendees={setAttendees(event)}
-                    workplace={"Northwestern University"}
                     setEvent={() => {
                       setSelectedEvent(event);
                       console.log('selectedEvent', selectedEvent);
                     }}
+                    workplace={event.creator.email.replace(/^[^@]*@/, '').split('.')[0]}
                   />
             </div>
               )
@@ -192,7 +203,7 @@ function Home(props) {
                 email={selectedEvent.creator.email}
                 meetingAttendees={setAttendees(selectedEvent)}
                 isFirst
-                workplace={"Northwestern University"}
+                workplace={selectedEvent.creator.email.replace(/^[^@]*@/, '').split('.')[0]}
                 />
             }
       </div>
