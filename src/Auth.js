@@ -37,7 +37,8 @@ class Auth extends Component {
 
       this.state = {
         isSignedIn: false,
-        calendar_events: null
+        calendar_events: null,
+        email: ''
       }
 
     }
@@ -60,9 +61,11 @@ class Auth extends Component {
 
         this.auth2.then(() => {
           console.log('on init');
-          console.log(this.auth2.currentUser.get().getBasicProfile().getName())
+          let authEmail = this.auth2.currentUser.get().getBasicProfile().getEmail()
+          console.log(authEmail)
           this.setState({
             isSignedIn: this.auth2.isSignedIn.get(),
+            email: authEmail
           });
         });
       })
@@ -148,7 +151,7 @@ class Auth extends Component {
               this.getCalendar()
             }
             return(
-                <App calendar_events={this.state.calendar_events}></App>
+                <App calendar_events={this.state.calendar_events} authEmail={this.state.email}></App>
             )
         }
         else {

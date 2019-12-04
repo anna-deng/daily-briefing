@@ -119,3 +119,12 @@
     display: inline-block;
     margin-right: 8px;
   }
+
+  .creator {
+    color: black;
+    text-decoration: none;
+  }
+
+  .creator:hover {
+    text-decoration: underline;
+  }

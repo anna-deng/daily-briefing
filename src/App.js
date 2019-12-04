@@ -21,7 +21,7 @@ export default function App(props) {
             <Users />
           </Route>
           <Route path="/">
-            <Home calendar_events={props.calendar_events}/>
+            <Home calendar_events={props.calendar_events} authEmail={props.authEmail}/>
           </Route>
         </Switch>
       </div>
@@ -205,6 +205,7 @@ function Home(props) {
                 meetingAttendees={setAttendees(selectedEvent)}
                 isFirst
                 workplace={getDomain(selectedEvent.creator.email)}
+                authEmail={props.authEmail}
                 />
             }
       </div>

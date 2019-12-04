@@ -17,6 +17,7 @@ const PrimaryView = ({
   meetingAttendees,
   emailBody,
   workplace,
+  authEmail
 }) => {
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -77,6 +78,8 @@ const PrimaryView = ({
   }
 
   const makeEmailsLinks = () => {
+    console.log('MAKING LINKED EMAILS')
+    console.log(authEmail)
     // var result = ''
     if(meetingAttendees) {
       const arrayOfEmails = meetingAttendees.split(" ")
@@ -86,7 +89,7 @@ const PrimaryView = ({
       return (
       <div>
       {arrayOfEmails.map((e, i) => {
-        if(e !== email){
+        if(e !== authEmail && e !== email){
           return (
             <div>
               <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${e}`}  target="_blank">{e}</a>
@@ -99,7 +102,8 @@ const PrimaryView = ({
 
   const renderEmailLinks = () => {
     return (makeEmailsLinks()) ?
-    (<p className="preview-view-name-email">
+    (
+    <p className="preview-view-name-email">
     <span className="preview-view-name">
       {makeEmailsLinks()}
     </span>
@@ -141,11 +145,10 @@ const PrimaryView = ({
             </div>
             <div className="preview-view-body">
               <h1>{meetingTitle}</h1>
-              <h3>{email}</h3>
+              <h3><a className='creator' href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`}  target="_blank">{email}</a></h3>
               <hr />
-              {renderDescription()}
-              <div className='news-subheader'>Attendees: </div>
              {renderEmailLinks()}
+             {renderDescription()}
               {/* <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a> */}
               {/* <p className="preview-view-description" dangerouslySetInnerHTML={{ __html: description}}></p> */}
               {/* <p>{meetingAttendees}</p> */}
