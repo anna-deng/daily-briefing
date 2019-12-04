@@ -65,11 +65,13 @@ const PrimaryView = ({
       // }
       return (
       <div>
-      {arrayOfEmails.map((email, i) => {
-        return (
-          <div>
-            <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`}>{email}</a>
-          </div>)
+      {arrayOfEmails.map((e, i) => {
+        if(e !== email){
+          return (
+            <div>
+              <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${e}`}  target="blank">{e}</a>
+            </div>)
+        }
       })}
       </div>
       )
@@ -100,18 +102,19 @@ const PrimaryView = ({
               <hr />
               <p className="preview-view-name-email">
                 <span className="preview-view-name">
-                  <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">{name}</a>
+                  {/* <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">{name}</a> */}
+                  {makeEmailsLinks()}
                   {/* <i class="material-icons preview-view-name-icon">
                     info
                   </i> */}
                 </span>
-                <br />
-                {title}
+                {/* <br /> */}
+                {/* {title} */}
               </p>
               {/* <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a> */}
               <p className="preview-view-description" dangerouslySetInnerHTML={{ __html: description}}></p>
               {/* <p>{meetingAttendees}</p> */}
-              <div>{makeEmailsLinks()}</div>
+              {/* <div>{makeEmailsLinks()}</div> */}
               <p id={meetingAttendees}></p>
               <div>{pullEmails()}</div>
               <div id={meetingTitle}></div>
