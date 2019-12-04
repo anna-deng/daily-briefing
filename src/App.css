@@ -67,6 +67,7 @@ line-height: 150%;
 
 body {
   background: #ededed;
+  overflow-x: hidden;
 }
 
 .primary-view-container {
