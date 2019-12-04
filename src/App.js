@@ -72,13 +72,14 @@ function Home(props) {
     else {
       domain = domain.split('.')[0]
     }
+    console.log(domain);
     return domain
   }
-  
-  // meetingsList: sorted [] of event objects 
+
+  // meetingsList: sorted [] of event objects
   // transformed to: {date1: [event1, event2], date2:[event3]}
   const mappifyMeetingsList = () => {
-    sortMeetingsList() 
+    sortMeetingsList()
     const meetingsMap = new Map();
     if(meetingsList) {
     meetingsList.items.map((event, i) => {
@@ -99,7 +100,7 @@ function Home(props) {
     var meetingDates = Array.from(meetingsMap.keys());
     return (
       <div className='cards-container'>
-        {meetingsMap && 
+        {meetingsMap &&
        meetingDates.map((date, d)=>{
           return meetingsMap.get(date).map((event, e)=>{
             if(d == 0 && e == 0) {
@@ -131,7 +132,7 @@ function Home(props) {
               )
             }
             else {
-              return( e == 0 ? 
+              return( e == 0 ?
                 <div>
                   <p className='event-date'>{date}</p>
                   <Card
@@ -147,7 +148,7 @@ function Home(props) {
                     description={event.description!=="" ? event.description : "No Event Description"}
                     email={event.creator.email}
                     meetingAttendees={setAttendees(event)}
-                    workplace={event.creator.email.replace(/^[^@]*@/, '').split('.')[0]}
+                    workplace={getDomain(event.creator.email)}
                     setEvent={() => {
                       setSelectedEvent(event);
                       console.log('selectedEvent', selectedEvent);
@@ -172,7 +173,7 @@ function Home(props) {
                       setSelectedEvent(event);
                       console.log('selectedEvent', selectedEvent);
                     }}
-                    workplace={event.creator.email.replace(/^[^@]*@/, '').split('.')[0]}
+                    workplace={getDomain(event.creator.email)}
                   />
             </div>
               )
@@ -184,7 +185,7 @@ function Home(props) {
     )
   }
 
-  
+
   const renderPrimaryView = () => {
     return (
       <div className='primary-view-container'>
@@ -203,13 +204,13 @@ function Home(props) {
                 email={selectedEvent.creator.email}
                 meetingAttendees={setAttendees(selectedEvent)}
                 isFirst
-                workplace={selectedEvent.creator.email.replace(/^[^@]*@/, '').split('.')[0]}
+                workplace={getDomain(selectedEvent.creator.email)}
                 />
             }
       </div>
     )
   }
-  
+
   return (
     <div>
       {/* <h1 className="App-title"> NEXT MEETING:</h1> */}

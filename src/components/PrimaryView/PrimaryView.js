@@ -21,7 +21,7 @@ const PrimaryView = ({
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
-  
+
   const pullEmails = () => {
     console.log(meetingAttendees)
     if(!meetingAttendees) {
@@ -40,14 +40,15 @@ const PrimaryView = ({
         gmail.listLabels(gapi.client.getToken(), meetingAttendees, function(results){
           console.log('going to return');
           console.log(results);
-          // return(
-          // <p>
-          //   {results}
-          // </p>)  
-          // alert(results)        
-          if(meetingAttendees){
-            return(<p>{results}</p>);
-          }
+          document.getElementById(meetingTitle).innerHTML = results;
+           return(
+           <p>
+             {results}
+           </p>)
+          // alert(results)
+          // if(meetingAttendees){
+          //   return(<p>{results}</p>);
+          // }
         });
       }
     }
@@ -59,7 +60,7 @@ const PrimaryView = ({
       const arrayOfEmails = meetingAttendees.split(" ")
       // if(meeting.length == 2) {
       //   alert("You are the only attendee on this event, no emails to pull!")
-      // } 
+      // }
       return (
       <div>
       {arrayOfEmails.map((e, i) => {
@@ -104,7 +105,7 @@ const PrimaryView = ({
                   {/* <i class="material-icons preview-view-name-icon">
                     info
                   </i> */}
-                </span> 
+                </span>
                 {/* <br /> */}
                 {/* {title} */}
               </p>
@@ -114,6 +115,7 @@ const PrimaryView = ({
               {/* <div>{makeEmailsLinks()}</div> */}
               <p id={meetingAttendees}></p>
               <div>{pullEmails()}</div>
+              <div id={meetingTitle}></div>
               <div>{getNewsArticles(workplace)}</div>
               {/* <button className={"preview-view-email-button preview-view-button" + (selectedButton == 'email' ? ' selected-button' : '')}
                       onClick={()=> {
@@ -148,7 +150,7 @@ const PrimaryView = ({
                         }
                       }}>
                         <i class="material-icons">perm_contact_calendar</i>
-              </button> 
+              </button>
             </div>
           </div>
         </div>
