@@ -71,12 +71,23 @@ const PrimaryView = ({
           return (
             <div>
               <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${e}`}  target="blank">{e}</a>
-            </div>)
+            </div>
+            )
         }
       })}
       </div>
       )
   }}
+
+  const renderEmailLinks = () => {
+    return (makeEmailsLinks()) ?
+    (<p className="preview-view-name-email">
+    <span className="preview-view-name">
+      {makeEmailsLinks()}
+    </span>
+  </p>) : null
+  }
+
 
   const getNewsArticles = (query) => {
     getNews(query).then(response => {
@@ -94,6 +105,10 @@ const PrimaryView = ({
     return(<p id={query}></p>);
   }
 
+  const renderDescription = () => {
+    return (description) ? (<p className="preview-view-description" dangerouslySetInnerHTML={{ __html: description}}></p>) :null
+  }
+
   useEffect(() => {
     console.log('toggle')
   }, [isExpanded]);
@@ -109,19 +124,10 @@ const PrimaryView = ({
             <div className="preview-view-body">
               <h1>{meetingTitle}</h1>
               <hr />
-              <p className="preview-view-name-email">
-                <span className="preview-view-name">
-                  {/* <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">{name}</a> */}
-                  {makeEmailsLinks()}
-                  {/* <i class="material-icons preview-view-name-icon">
-                    info
-                  </i> */}
-                </span>
-                {/* <br /> */}
-                {/* {title} */}
-              </p>
+             {renderEmailLinks()}
               {/* <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a> */}
-              <p className="preview-view-description" dangerouslySetInnerHTML={{ __html: description}}></p>
+              {/* <p className="preview-view-description" dangerouslySetInnerHTML={{ __html: description}}></p> */}
+              {renderDescription()}
               {/* <p>{meetingAttendees}</p> */}
               {/* <div>{makeEmailsLinks()}</div> */}
               <p id={meetingAttendees}></p>
