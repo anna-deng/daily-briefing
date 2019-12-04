@@ -66,7 +66,7 @@ const PrimaryView = ({
         if(e !== email){
           return (
             <div>
-              <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${e}`}>{e}</a>
+              <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${e}`}  target="blank">{e}</a>
             </div>)
         }
       })}
@@ -105,7 +105,7 @@ const PrimaryView = ({
                     info
                   </i> */}
                 </span> 
-                <br />
+                {/* <br /> */}
                 {/* {title} */}
               </p>
               {/* <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a> */}
