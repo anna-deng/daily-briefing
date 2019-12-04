@@ -62,11 +62,15 @@ const PrimaryView = ({
       // } 
       return (
       <div>
-      {arrayOfEmails.map((email, i) => {
-        return (
-          <div>
-            <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`}>{email}</a>
-          </div>)
+      {arrayOfEmails.map((e, i) => {
+        console.log(email)
+        console.log(e)
+        if(e !== email){
+          return (
+            <div>
+              <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${e}`}>{e}</a>
+            </div>)
+        }
       })}
       </div>
       )
