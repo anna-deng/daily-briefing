@@ -22,6 +22,24 @@ const PrimaryView = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
 
+  const getWebsite = (s) => {
+    var https = 'https://'
+    var domain = s.replace(/^[^@]*@/, '')
+    if(domain.includes('u.')) {
+      domain = domain.split('u.')[1]
+    }
+    else {
+      domain = domain
+    }
+    console.log(domain);
+    return https.concat(domain)
+  }
+
+  const capitalize = (s) => {
+    if (typeof s !== 'string') return ''
+    return s.charAt(0).toUpperCase() + s.slice(1)
+  }
+
   const pullEmails = () => {
     console.log(meetingAttendees)
     if(!meetingAttendees) {
@@ -69,7 +87,7 @@ const PrimaryView = ({
         if(e !== email){
           return (
             <div>
-              <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${e}`}  target="blank">{e}</a>
+              <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${e}`}  target="_blank">{e}</a>
             </div>)
         }
       })}
@@ -118,6 +136,7 @@ const PrimaryView = ({
               <p id={meetingAttendees}></p>
               <div>{pullEmails()}</div>
               <div id={meetingTitle}></div>
+              <div className='news-subheader'>News About: </div><a href={getWebsite(email)} className='news-subheader' target="_blank">{capitalize(workplace)}</a>
               <div>{getNewsArticles(workplace)}</div>
               {/* <button className={"preview-view-email-button preview-view-button" + (selectedButton == 'email' ? ' selected-button' : '')}
                       onClick={()=> {
@@ -142,7 +161,7 @@ const PrimaryView = ({
                       <i class="material-icons">rss_feed</i>
               </button> */}
               {/* <button className={"preview-view-contact-button preview-view-button" + (selectedButton == 'contact' ? ' selected-button' : '')} */}
-              <button className={"preview-view-contact-button preview-view-button"}
+              {/* <button className={"preview-view-contact-button preview-view-button"}
                       onClick={()=>{
                         if (selectedButton == 'contact') {
                           setSelectedButton(null)
@@ -152,7 +171,7 @@ const PrimaryView = ({
                         }
                       }}>
                         <i class="material-icons">perm_contact_calendar</i>
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
