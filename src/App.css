@@ -62,14 +62,17 @@ line-height: 150%;
   overflow: scroll;
   position: fixed;
   background: #fafafa;
+  border-right: 1px solid #dadada;
+}
+
+body {
+  background: #ededed;
 }
 
 .primary-view-container {
   width: 69%;
   float: right;
-  border-left: 1px solid #dadada;
   margin-right: -1px;
-  background: #ededed;
   z-index: 999;
   height: 100%;
 }
