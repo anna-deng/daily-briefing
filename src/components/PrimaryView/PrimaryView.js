@@ -25,16 +25,16 @@ const PrimaryView = ({
   const pullEmails = () => {
     console.log(meetingAttendees)
     if(!meetingAttendees) {
-      return (<p>
-        You are the only attendee on this event, no emails to pull!
-      </p>)
+      // return (<p>
+      //   You are the only attendee on this event, no emails to pull!
+      // </p>)
     }
     else if(meetingAttendees) {
       const meeting = meetingAttendees.split(" ")
       if(meeting.length == 2) {
-        return(<p>
-          You are the only attendee on this event, no emails to pull!
-        </p>)
+        // return(<p>
+        //   You are the only attendee on this event, no emails to pull!
+        // </p>)
       }
       else {
         gmail.listLabels(gapi.client.getToken(), meetingAttendees, function(results){
