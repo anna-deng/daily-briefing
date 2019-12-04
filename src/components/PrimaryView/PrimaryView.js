@@ -41,6 +41,7 @@ const PrimaryView = ({
   }
 
   const pullEmails = () => {
+    console.log('pulling emails with attendees.....')
     console.log(meetingAttendees)
     if(!meetingAttendees) {
       //document.getElementById(meetingTitle).innerHTML = "";
@@ -50,7 +51,7 @@ const PrimaryView = ({
     }
     else if(meetingAttendees) {
       const meeting = meetingAttendees.split(" ")
-      if(meeting.length == 2) {
+      if(meeting.length === 2) {
         //document.getElementById(meetingTitle).innerHTML = "";
         return(<p>
           You are the only attendee on this event.
@@ -140,14 +141,17 @@ const PrimaryView = ({
             </div>
             <div className="preview-view-body">
               <h1>{meetingTitle}</h1>
+              <h3>{email}</h3>
               <hr />
+              {renderDescription()}
+              <div className='news-subheader'>Attendees: </div>
              {renderEmailLinks()}
               {/* <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a> */}
               {/* <p className="preview-view-description" dangerouslySetInnerHTML={{ __html: description}}></p> */}
-              {renderDescription()}
               {/* <p>{meetingAttendees}</p> */}
               {/* <div>{makeEmailsLinks()}</div> */}
               <p id={meetingAttendees}></p>
+              <div className='news-subheader'>Recent Email: </div>
               <div>{pullEmails()}</div>
               <div id={meetingTitle}></div>
               <div className='news-subheader'>News About: </div><a href={getWebsite(email)} className='news-subheader' target="_blank">{capitalize(workplace)}</a>
