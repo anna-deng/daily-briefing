@@ -43,7 +43,7 @@ const PrimaryView = ({
   const pullEmails = () => {
     console.log(meetingAttendees)
     if(!meetingAttendees) {
-      document.getElementById(meetingTitle).innerHTML = "";
+      //document.getElementById(meetingTitle).innerHTML = "";
       return (<p>
         You are the only attendee on this event, no emails to pull!
       </p>)
@@ -51,7 +51,7 @@ const PrimaryView = ({
     else if(meetingAttendees) {
       const meeting = meetingAttendees.split(" ")
       if(meeting.length == 2) {
-        document.getElementById(meetingTitle).innerHTML = "";
+        //document.getElementById(meetingTitle).innerHTML = "";
         return(<p>
           You are the only attendee on this event, no emails to pull!
         </p>)
@@ -69,7 +69,8 @@ const PrimaryView = ({
           if(meetingAttendees){
             return(<p>{results}</p>);
           }
-        });
+        })
+        return(<p id={meetingTitle}></p>);
       }
     }
   }
@@ -95,12 +96,34 @@ const PrimaryView = ({
       )
   }}
 
+  const renderEmailLinks = () => {
+    return (makeEmailsLinks()) ?
+    (<p className="preview-view-name-email">
+    <span className="preview-view-name">
+      {makeEmailsLinks()}
+    </span>
+  </p>) : null
+  }
+
+
   const getNewsArticles = (query) => {
     getNews(query).then(response => {
-      // console.log(response);
-      alert(response.articles[0].title + '\n' + response.articles[1].title + '\n' + response.articles[2].title)
+       console.log(response);
+       console.log((<a href={response.articles[0].url}>{response.articles[0].title}</a>));
+      document.getElementById(query).innerHTML = "<a target='_blank' href="+ response.articles[0].url + ">" + response.articles[0].title + "</a><br>" +
+      "<a target='_blank' href="+ response.articles[1].url + ">" + response.articles[1].title + "</a><br>" +
+      "<a target='_blank' href="+ response.articles[2].url + ">" + response.articles[2].title + "</a>";
+
+
+      // + '\n' + response.articles[1].title + '\n' + response.articles[2].title;
+      //alert(response.articles[0].title + '\n' + response.articles[1].title + '\n' + response.articles[2].title)
       return(<p>{response.articles[0].title}</p>)
     })
+    return(<p id={query}></p>);
+  }
+
+  const renderDescription = () => {
+    return (description) ? (<p className="preview-view-description" dangerouslySetInnerHTML={{ __html: description}}></p>) :null
   }
 
   useEffect(() => {
@@ -118,19 +141,10 @@ const PrimaryView = ({
             <div className="preview-view-body">
               <h1>{meetingTitle}</h1>
               <hr />
-              <p className="preview-view-name-email">
-                <span className="preview-view-name">
-                  {/* <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">{name}</a> */}
-                  {makeEmailsLinks()}
-                  {/* <i class="material-icons preview-view-name-icon">
-                    info
-                  </i> */}
-                </span>
-                {/* <br /> */}
-                {/* {title} */}
-              </p>
+             {renderEmailLinks()}
               {/* <a href={`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`} target="_blank">linkedin</a> */}
-              <p className="preview-view-description" dangerouslySetInnerHTML={{ __html: description}}></p>
+              {/* <p className="preview-view-description" dangerouslySetInnerHTML={{ __html: description}}></p> */}
+              {renderDescription()}
               {/* <p>{meetingAttendees}</p> */}
               {/* <div>{makeEmailsLinks()}</div> */}
               <p id={meetingAttendees}></p>
