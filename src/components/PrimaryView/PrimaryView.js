@@ -25,7 +25,7 @@ const PrimaryView = ({
   const pullEmails = () => {
     console.log(meetingAttendees)
     if(!meetingAttendees) {
-      document.getElementById(meetingTitle).innerHTML = "";
+      //document.getElementById(meetingTitle).innerHTML = "";
       return (<p>
         You are the only attendee on this event, no emails to pull!
       </p>)
@@ -33,7 +33,7 @@ const PrimaryView = ({
     else if(meetingAttendees) {
       const meeting = meetingAttendees.split(" ")
       if(meeting.length == 2) {
-        document.getElementById(meetingTitle).innerHTML = "";
+        //document.getElementById(meetingTitle).innerHTML = "";
         return(<p>
           You are the only attendee on this event, no emails to pull!
         </p>)
@@ -51,7 +51,8 @@ const PrimaryView = ({
           if(meetingAttendees){
             return(<p>{results}</p>);
           }
-        });
+        })
+        return(<p id={meetingTitle}></p>);
       }
     }
   }
@@ -79,10 +80,18 @@ const PrimaryView = ({
 
   const getNewsArticles = (query) => {
     getNews(query).then(response => {
-      // console.log(response);
-      alert(response.articles[0].title + '\n' + response.articles[1].title + '\n' + response.articles[2].title)
+       console.log(response);
+       console.log((<a href={response.articles[0].url}>{response.articles[0].title}</a>));
+      document.getElementById(query).innerHTML = "<a target='_blank' href="+ response.articles[0].url + ">" + response.articles[0].title + "</a><br>" +
+      "<a target='_blank' href="+ response.articles[1].url + ">" + response.articles[1].title + "</a><br>" +
+      "<a target='_blank' href="+ response.articles[2].url + ">" + response.articles[2].title + "</a>";
+
+
+      // + '\n' + response.articles[1].title + '\n' + response.articles[2].title;
+      //alert(response.articles[0].title + '\n' + response.articles[1].title + '\n' + response.articles[2].title)
       return(<p>{response.articles[0].title}</p>)
     })
+    return(<p id={query}></p>);
   }
 
   useEffect(() => {
@@ -117,7 +126,6 @@ const PrimaryView = ({
               {/* <div>{makeEmailsLinks()}</div> */}
               <p id={meetingAttendees}></p>
               <div>{pullEmails()}</div>
-              <div id={meetingTitle}></div>
               <div>{getNewsArticles(workplace)}</div>
               {/* <button className={"preview-view-email-button preview-view-button" + (selectedButton == 'email' ? ' selected-button' : '')}
                       onClick={()=> {
