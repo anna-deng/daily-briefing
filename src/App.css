@@ -33,6 +33,10 @@
   color: #09d3ac;
 }
 
+a{
+  color: #f49999;
+}
+
 /* .App-title {
 font-size: 18px;
 text-align: left;
@@ -53,13 +57,23 @@ line-height: 150%;
 }
 
 .cards-container {
-  width: 33%;
+  width: 31%;
   height: 102%;
   overflow: scroll;
   position: fixed;
+  background: #fafafa;
 }
 
 .primary-view-container {
-  width: 67%;
+  width: 69%;
   float: right;
+  border-left: 1px solid #dadada;
+  margin-right: -1px;
+  background: #ededed;
+  z-index: 999;
+  height: 100%;
+}
+
+::-webkit-scrollbar{
+  width: 0px;
 }

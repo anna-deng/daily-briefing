@@ -45,7 +45,7 @@ const PrimaryView = ({
     if(!meetingAttendees) {
       //document.getElementById(meetingTitle).innerHTML = "";
       return (<p>
-        You are the only attendee on this event, no emails to pull!
+        You are the only attendee on this event.
       </p>)
     }
     else if(meetingAttendees) {
@@ -53,7 +53,7 @@ const PrimaryView = ({
       if(meeting.length == 2) {
         //document.getElementById(meetingTitle).innerHTML = "";
         return(<p>
-          You are the only attendee on this event, no emails to pull!
+          You are the only attendee on this event.
         </p>)
       }
       else {
@@ -152,40 +152,6 @@ const PrimaryView = ({
               <div id={meetingTitle}></div>
               <div className='news-subheader'>News About: </div><a href={getWebsite(email)} className='news-subheader' target="_blank">{capitalize(workplace)}</a>
               <div>{getNewsArticles(workplace)}</div>
-              {/* <button className={"preview-view-email-button preview-view-button" + (selectedButton == 'email' ? ' selected-button' : '')}
-                      onClick={()=> {
-                        if (selectedButton == 'email') {
-                          setSelectedButton(null)
-                        } else {
-                          pullEmails()
-                          setSelectedButton('email')
-                        }
-                        }}>
-                        <i class="material-icons">forum</i>
-              </button> */}
-              {/* <button className={"preview-view-news-button preview-view-button" + (selectedButton == 'news' ? ' selected-button' : '')}
-                      onClick={()=>{
-                        if (selectedButton == 'news') {
-                          setSelectedButton(null)
-                        } else {
-                          getNewsArticles(workplace)
-                          setSelectedButton('news')
-                        }
-                        }}>
-                      <i class="material-icons">rss_feed</i>
-              </button> */}
-              {/* <button className={"preview-view-contact-button preview-view-button" + (selectedButton == 'contact' ? ' selected-button' : '')} */}
-              {/* <button className={"preview-view-contact-button preview-view-button"}
-                      onClick={()=>{
-                        if (selectedButton == 'contact') {
-                          setSelectedButton(null)
-                        } else {
-                          setSelectedButton('contact')
-                          window.open(`https://www.linkedin.com/sales/gmail/profile/viewByEmail/${email}`)
-                        }
-                      }}>
-                        <i class="material-icons">perm_contact_calendar</i>
-              </button> */}
             </div>
           </div>
         </div>
